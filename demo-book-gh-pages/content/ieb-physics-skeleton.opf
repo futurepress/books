@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifer="uid">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+          <dc:identifier id="uid">siyavula.com.dummy-book-repo.1.0</dc:identifier>
+          <dc:title>IEB Physics Outline</dc:title>
+          <dc:creator>Siyavula Education</dc:creator>
+          <dc:language>en</dc:language>
+          <meta property="dcterms:modified">Mon Aug 19 19:54:03 2013 GMT</meta>
+       </metadata><manifest>
+<item id="intro" href="Project-intro.html" media-type="application/xhtml+xml"/>
+<item id="chapter-0" href="01-Vectors.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-1" href="02-Kinematics.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-2" href="03-NewtonsLaws.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-3" href="04-MomentumAndImpulse.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-4" href="05-WorkEnergyPower.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-5" href="06-NewtonsLawUniversalGravitation.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-6" href="07-Electrostatics.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-7" href="08-ElectricCircuits.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-8" href="09-Electrodynamics.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-9" href="10-PhotoElectricEffectAndEmissionSpectra.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="chapter-10" href="template.cnxmlplus.html" media-type="application/xhtml+xml"/>
+<item id="nav" href="ieb-physics-skeleton-nav.html" media-type="application/xhtml+xml" properties="nav"/>
+</manifest><spine>
+<itemref idref="intro"/>
+<itemref idref="chapter-0"/>
+<itemref idref="chapter-1"/>
+<itemref idref="chapter-2"/>
+<itemref idref="chapter-3"/>
+<itemref idref="chapter-4"/>
+<itemref idref="chapter-5"/>
+<itemref idref="chapter-6"/>
+<itemref idref="chapter-7"/>
+<itemref idref="chapter-8"/>
+<itemref idref="chapter-9"/>
+<itemref idref="chapter-10"/>
+</spine></package>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a></title>
+<link href="stylesheet.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<h1><a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a></h1>
+<h2 id="introduction">Introduction</h2><p>One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called <a href="http://pivotal.github.com/jasmine/">Jasmine</a> from Pivotal Labs.</p><p>For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and it's dependencies with a level of confidence about whether these changes have caused any breakage.</p><p>As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.</p><p>When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.</p><h2 id="jasmine">Jasmine</h2><p>Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a> is.</p><p>BDD is a second-generation testing approach first described by <a href="http://dannorth.net/introducing-bdd/">Dan North</a> (the authority on BDD) which attempts to test the behavior of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.</p><p>If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.</p><p>BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value you and exactly what in it will be valuable to them.</p><p>Finally, BDD relies on automation. Once you've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this.</p><p>BDD helps both developers and non-technical stakeholders:</p><ul><li>Better understand and represent the models of the problems being solved</li><li>Explain supported tests cases in a language that non-developers can read</li><li>Focus on minimizing translation of the technical code being written and the domain language spoken by the business</li></ul><p>What this means is that developers should be able to show Jasmine unit tests to a project stakeholder and (at a high level, thanks to a common vocabulary being used) they'll ideally be able to understand what the code supports.</p><p>Developers often implement BDD in unison with another testing paradigm known as <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> (test-driven development). The main idea behind TDD is:</p><ul><li>Write unit tests which describe the functionality you would like your code to support</li><li>Watch these tests fail (as the code to support them hasn't yet been written)</li><li>Write code to make the tests pass</li><li>Rinse, repeat and refactor</li></ul><p>In this chapter we're going to use both BDD (with TDD) to write unit tests for a Backbone application.</p><p><strong><em>Note:</em></strong> I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.</p><h2 id="suites-specs-spies">Suites, Specs &amp; Spies</h2><p>When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.</p><p>Each spec is a JavaScript function, described with a call to `<code>it()</code> using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;should be incrementing in value&#39;</span>, <span class="kw">function</span>(){
+    <span class="kw">var</span> counter = <span class="dv">0</span>;
+    counter++;  
+});</code></pre><p>On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the <code>expect()</code> function and an <a href="https://github.com/pivotal/jasmine/wiki/Matchers">expectation matcher</a> (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;should be incrementing in value&#39;</span>, <span class="kw">function</span>(){
+    <span class="kw">var</span> counter = <span class="dv">0</span>;
+    counter++;  
+    expect(counter).<span class="fu">toEqual</span>(<span class="dv">1</span>);
+});</code></pre><p>The above code passes our behavioral expectation as `<code>counter</code> equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).</p><p>Specs are grouped into suites which we describe using Jasmine's <code>describe()</code> function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you're testing.</p><p>Jasmine will use it as the group name when it reports the results of the specs you've asked it to run. A simple suite containing our sample spec could look like:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Stats&#39;</span>, <span class="kw">function</span>(){
+    it(<span class="ch">&#39;can increment a number&#39;</span>, <span class="kw">function</span>(){
+        ...
+    });
+
+    it(<span class="ch">&#39;can subtract a number&#39;</span>, <span class="kw">function</span>(){
+        ...
+    });
+});</code></pre><p>Suites also share a functional scope and so it's possible to declare variables and functions inside a describe block which are accessible within specs:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Stats&#39;</span>, <span class="kw">function</span>(){
+    <span class="kw">var</span> counter = <span class="dv">1</span>;
+
+    it(<span class="ch">&#39;can increment a number&#39;</span>, <span class="kw">function</span>(){
+        <span class="co">// the counter was = 1</span>
+        counter = counter + <span class="dv">1</span>;
+        expect(counter).<span class="fu">toEqual</span>(<span class="dv">2</span>);
+    });
+
+    it(<span class="ch">&#39;can subtract a number&#39;</span>, <span class="kw">function</span>(){
+        <span class="co">// the counter was = 2</span>
+        counter = counter - <span class="dv">1</span>;
+        expect(counter).<span class="fu">toEqual</span>(<span class="dv">1</span>);
+    });
+});</code></pre><p><strong><em>Note:</em></strong> Suites are executed in the order in which they are described, which can be useful to know if you would prefer to see test results for specific parts of your application reported first.</p><p>Jasmine also supports <strong>spies</strong> - a way to mock, spy and fake behavior in our unit tests. Spies replace the function they're spying on, allowing us to simulate behavior we would like to mock (i.e test free of the actual implementation).</p><p>In the below example, we're spying on the <code>setComplete</code> method of a dummy Todo function to test that arguments can be passed to it as expected.</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">function</span>(){
+};
+
+<span class="kw">Todo.prototype</span>.<span class="fu">setComplete</span> = <span class="kw">function</span> (arg){
+    <span class="kw">return</span> arg;
+}
+
+describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">function</span>(){
+    it(<span class="ch">&#39;should spy on an instance method of a Todo&#39;</span>, <span class="kw">function</span>(){
+        <span class="kw">var</span> myTodo = <span class="kw">new</span> Todo();
+        spyOn(myTodo, <span class="ch">&#39;setComplete&#39;</span>);
+        <span class="kw">myTodo</span>.<span class="fu">setComplete</span>(<span class="ch">&#39;foo bar&#39;</span>);
+
+        expect(<span class="kw">myTodo</span>.<span class="fu">setComplete</span>).<span class="fu">toHaveBeenCalledWith</span>(<span class="ch">&#39;foo bar&#39;</span>);
+
+        <span class="kw">var</span> myTodo2 = <span class="kw">new</span> Todo();
+        spyOn(myTodo2, <span class="ch">&#39;setComplete&#39;</span>);
+
+        expect(<span class="kw">myTodo2</span>.<span class="fu">setComplete</span>).<span class="fu">not</span>.<span class="fu">toHaveBeenCalled</span>();
+
+    });
+});</code></pre><p>What you're more likely to use spies for is testing <a href="http://en.wikipedia.org/wiki/Asynchronous_communication">asynchronous</a> behavior in your application such as AJAX requests. Jasmine supports:</p><ul><li>Writing tests which can mock AJAX requests using spies. This allows us to test code which runs before an AJAX request and right after. It's also possible to mock/fake responses the server can return and the benefit of this type of testing is that it's faster as no real calls are being made to a server</li><li>Asynchronous tests which don't rely on spies</li></ul><p>For the first kind of test, it's possible to both fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="st">&quot;the callback should be executed on success&quot;</span>, <span class="kw">function</span> () {
+    spyOn($, <span class="st">&quot;ajax&quot;</span>).<span class="fu">andCallFake</span>(<span class="kw">function</span>(options) {
+        <span class="kw">options</span>.<span class="fu">success</span>();
+    });
+
+    <span class="kw">var</span> callback = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>();
+    getTodo(<span class="dv">15</span>, callback);
+
+    expect($.<span class="fu">ajax</span>.<span class="fu">mostRecentCall</span>.<span class="fu">args</span>[<span class="dv">0</span>][<span class="st">&quot;url&quot;</span>]).<span class="fu">toEqual</span>(<span class="st">&quot;/todos/15&quot;</span>);
+    expect(callback).<span class="fu">toHaveBeenCalled</span>();
+});
+
+<span class="kw">function</span> getTodo(id, callback) {
+    $.<span class="fu">ajax</span>({
+        <span class="dt">type</span>: <span class="st">&quot;GET&quot;</span>,
+        <span class="dt">url</span>: <span class="st">&quot;/todos/&quot;</span> + id,
+        <span class="dt">dataType</span>: <span class="st">&quot;json&quot;</span>,
+        <span class="dt">success</span>: callback
+    });
+}</code></pre><p>If you feel lost having seen matchers like <code>andCallFake()</code> and <code>toHaveBeenCalled()</code>, don't worry. All of these are Spy-specific matchers and are documented on the Jasmine <a href="https://github.com/pivotal/jasmine/wiki/Spies">wiki</a>.</p><p>For the second type of test (asynchronous tests), we can take the above further by taking advantage of three other methods Jasmine supports:</p><ul><li>runs(function) - a block which runs as if it was directly called</li><li>waits(timeout) - a native timeout before the next block is run</li><li>waitsFor(function, optional message, optional timeout) - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.</li></ul><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="st">&quot;should make an actual AJAX request to a server&quot;</span>, <span class="kw">function</span> () {
+
+    <span class="kw">var</span> callback = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>();
+    getTodo(<span class="dv">16</span>, callback);
+
+    waitsFor(<span class="kw">function</span>() {
+        <span class="kw">return</span> <span class="kw">callback</span>.<span class="fu">callCount</span> &gt; <span class="dv">0</span>;
+    });
+
+    runs(<span class="kw">function</span>() {
+        expect(callback).<span class="fu">toHaveBeenCalled</span>();
+    });
+});
+
+<span class="kw">function</span> getTodo(id, callback) {
+    $.<span class="fu">ajax</span>({
+        <span class="dt">type</span>: <span class="st">&quot;GET&quot;</span>,
+        <span class="dt">url</span>: <span class="st">&quot;todos.json&quot;</span>,
+        <span class="dt">dataType</span>: <span class="st">&quot;json&quot;</span>,
+        <span class="dt">success</span>: callback
+    });
+}</code></pre><p><strong><em>Note:</em></strong> It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimized in your unit testing, it is strongly recommended that you opt for spies to remove the need for a web server to be used here.</p><h2 id="beforeeach-and-aftereach">beforeEach and afterEach()</h2><p>Jasmine also supports specifying code that can be run before each (<code>beforeEach()</code>) and after each (<code>afterEach</code>) test. This is useful for enforcing consistent conditions (such as resetting variables that may be required by specs). In the following example, <code>beforeEach()</code> is used to create a new sample Todo model specs can use for testing attributes.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">beforeEach(<span class="kw">function</span>(){
+   <span class="kw">this</span>.<span class="fu">todo</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
+      <span class="dt">text</span>: <span class="st">&quot;Buy some more groceries&quot;</span>,
+      <span class="dt">done</span>: <span class="kw">false</span> 
+   });
+});
+
+it(<span class="st">&quot;should contain a text value if not the default value&quot;</span>, <span class="kw">function</span>(){
+   expect(<span class="kw">this</span>.<span class="fu">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toEqual</span>(<span class="st">&quot;Buy some more groceries&quot;</span>); 
+});</code></pre><p>Each nested <code>describe()</code> in your tests can have their own <code>beforeEach()</code> and <code>afterEach()</code> methods which support including setup and teardown methods relevant to a particular suite. We'll be using <code>beforeEach()</code> in practice a little later.</p><h2 id="shared-scope">Shared scope</h2><p>In the previous section you may have noticed that we initially declared a variable <code>this.todo</code> in our <code>beforeEach()</code> call and were then able to continue using this in <code>afterEach()</code>. This is thanks to a powerful feature of Jasmine known as shared functional scope. Shared scope allows <code>this</code> properties to be common to all blocks (including <code>runs()</code>), but not declared variables (i.e <code>var</code>s).</p><h2 id="getting-setup">Getting setup</h2><p>Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything setup to write tests.</p><p>A standalone release of Jasmine can be <a href="http://pivotal.github.com/jasmine/download.html">downloaded</a> from the official release page.</p><p>You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine <a href="https://github.com/pivotal/jasmine/zipball/master">repo</a>.Alternatively, you can <code>git clone</code> the main Jasmine repository from https://github.com/pivotal/jasmine.git.</p><p>Let's review <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html">SpecRunner.html</a>:</p><p>It first includes both Jasmine and the necessary CSS required for reporting:</p><pre><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;lib/jasmine-1.1.0.rc1/jasmine.css&quot;/&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;lib/jasmine-1.1.0.rc1/jasmine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;lib/jasmine-1.1.0.rc1/jasmine-html.js&quot;&gt;&lt;/script&gt;</code></pre><p>Next, some sample tests are included:</p><pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;spec/SpecHelper.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;spec/PlayerSpec.js&quot;&gt;&lt;/script&gt;</code></pre><p>And finally the sources being tested:</p><pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;src/Player.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;src/Song.js&quot;&gt;&lt;/script&gt;</code></pre><p><strong><em>Note:</em></strong> Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js">PlayerSpec.js</a> and <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js">SpecHelper.js</a>. They're a useful basic example to go through how a minimal set of tests might work.</p><h2 id="tdd-with-backbone">TDD With Backbone</h2><p>When developing applications with Backbone, it can be necessary to test both individual modules of code as well as modules, views, collections and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone <a href="https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone">Todo</a> application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the <code>practicals\jasmine-koans</code> folder.</p><h2 id="models"><a name="testing-jasmine-models">Models</a></h2><p>The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.</p><p>First, we begin our suite for model testing using <code>describe()</code>:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Tests for Todo&#39;</span>, <span class="kw">function</span>() {</code></pre><p>Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g &quot;&quot;) is used instead. The idea here is to allow your application to interact with models without any unexpected behavior.</p><p>In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the <code>text</code> attribute is. As no value has been set, we expect a default value of `<code>&quot;&quot;</code> to be returned.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Can be created with default values for its attributes.&#39;</span>, <span class="kw">function</span>() {
+    <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
+    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toBe</span>(<span class="st">&quot;&quot;</span>);
+});</code></pre><p>If testing this spec before your models have been written, you'll incur a failing test, as expected. What's required for the spec to pass is a default value for the attribute <code>text</code>. We can implement this default value with some other useful defaults (which we'll be using shortly) in our Todo model as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">window</span>.<span class="fu">Todo</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+    <span class="dt">defaults</span>: <span class="kw">function</span>() {
+        <span class="kw">return</span> {
+            <span class="dt">text</span>: <span class="st">&quot;&quot;</span>,
+            <span class="dt">done</span>:  <span class="kw">false</span>,
+            <span class="dt">order</span>: <span class="dv">0</span>
+        };
+    }</code></pre><p>Next, we want to test that our model will pass attributes that are set such that retrieving the value of these attributes after initialization will be what we expect. Notice that here, in addition to testing for an expected value for <code>text</code>, we're also testing the other default values are what we expect them to be.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Will set passed attributes on the model instance when created.&#39;</span>, <span class="kw">function</span>() {
+    <span class="kw">var</span> todo = <span class="kw">new</span> Todo({ <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> });
+
+    <span class="co">// what are the values expected here for each of the</span>
+    <span class="co">// attributes in our Todo?</span>
+
+    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toBe</span>(<span class="st">&quot;Get oil change for car.&quot;</span>);
+    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)).<span class="fu">toBe</span>(<span class="kw">false</span>);
+    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>)).<span class="fu">toBe</span>(<span class="dv">0</span>);
+});</code></pre><p>Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by 'state' I'm referring to the value of a Todo model's attributes. The reason changes of state are important to test are that there may be state-dependent events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Fires a custom event when the state changes.&#39;</span>, <span class="kw">function</span>() {
+
+    <span class="kw">var</span> spy = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>(<span class="ch">&#39;-change event callback-&#39;</span>);
+
+    <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
+
+    <span class="co">// how do we monitor changes of state?</span>
+    <span class="kw">todo</span>.<span class="fu">bind</span>(<span class="ch">&#39;change&#39;</span>, spy);
+
+    <span class="co">// what would you need to do to force a change of state?</span>
+    <span class="kw">todo</span>.<span class="fu">set</span>({ <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> });
+
+    expect(spy).<span class="fu">toHaveBeenCalled</span>();
+});</code></pre><p>It's common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are 'valid'. A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we're storing the <code>done</code> state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.</p><p>In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an &quot;error&quot; event. This allows us to test if validations are correctly failing when invalid input is supplied.</p><p>We create an errorCallback spy using Jasmine's built in <code>createSpy()</code> method which allows us to spy on the error event as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Can contain custom validation rules, and will trigger an error event on failed validation.&#39;</span>, <span class="kw">function</span>() {
+
+    <span class="kw">var</span> errorCallback = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>(<span class="ch">&#39;-error event callback-&#39;</span>);
+
+    <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
+
+    <span class="kw">todo</span>.<span class="fu">bind</span>(<span class="ch">&#39;error&#39;</span>, errorCallback);
+
+    <span class="co">// What would you need to set on the todo properties to </span>
+    <span class="co">// cause validation to fail?</span>
+
+    <span class="kw">todo</span>.<span class="fu">set</span>({<span class="dt">done</span>:<span class="ch">&#39;a non-integer value&#39;</span>});
+
+    <span class="kw">var</span> errorArgs = <span class="kw">errorCallback.mostRecentCall</span>.<span class="fu">args</span>;
+
+    expect(errorArgs).<span class="fu">toBeDefined</span>();
+    expect(errorArgs[<span class="dv">0</span>]).<span class="fu">toBe</span>(todo);
+    expect(errorArgs[<span class="dv">1</span>]).<span class="fu">toBe</span>(<span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>);
+});</code></pre><p>The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+    <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
+        <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
+    }
+}</code></pre><p>If you would like to review the final code for our Todo model, you can find it below:</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> NAUGHTY_WORDS = <span class="ot">/</span><span class="fl">crap|</span><span class="ot">poop</span><span class="fl">|</span><span class="ot">hell</span><span class="fl">|</span><span class="ot">frogs/gi</span>;
+
+<span class="kw">function</span> sanitize(str) {
+    <span class="kw">return</span> <span class="kw">str</span>.<span class="fu">replace</span>(NAUGHTY_WORDS, <span class="ch">&#39;rainbows&#39;</span>);
+}
+
+<span class="kw">window</span>.<span class="fu">Todo</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+    <span class="dt">defaults</span>: <span class="kw">function</span>() {
+        <span class="kw">return</span> {
+            <span class="dt">text</span>: <span class="ch">&#39;&#39;</span>,
+            <span class="dt">done</span>:  <span class="kw">false</span>,
+            <span class="dt">order</span>: <span class="dv">0</span>
+        };
+    },
+
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">set</span>({<span class="dt">text</span>: sanitize(<span class="kw">this</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>))}, {<span class="dt">silent</span>: <span class="kw">true</span>});
+    },
+
+    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+        <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
+            <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
+        }
+    },
+
+    <span class="dt">toggle</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">save</span>({<span class="dt">done</span>: !<span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&quot;done&quot;</span>)});
+    }
+
+});</code></pre><h2 id="collections"><a name="testing-jasmine-collections">Collections</a></h2><p>We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.</p><p>A few specific specs that come to mind when working with collections are:</p><ul><li>Making sure we can add new Todo models as both objects and arrays</li><li>Attribute testing to make sure attributes such as the base URL of the collection are values we expect</li><li>Purposefully adding items with a status of <code>done:true</code> and checking against how many items the collection thinks have been completed vs. those that are remaining</li></ul><p>In this section we're going to cover the first two of these with the third left as an extended exercise I recommend trying out.</p><p>Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure it's length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Tests for TodoList&#39;</span>, <span class="kw">function</span>() {
+
+    it(<span class="ch">&#39;Can add Model instances as objects and arrays.&#39;</span>, <span class="kw">function</span>() {
+        <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
+
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">0</span>);
+
+        <span class="kw">todos</span>.<span class="fu">add</span>({ <span class="dt">text</span>: <span class="ch">&#39;Clean the kitchen&#39;</span> });
+
+        <span class="co">// how many todos have been added so far?</span>
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">1</span>);
+
+        <span class="kw">todos</span>.<span class="fu">add</span>([
+            { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> }, 
+            { <span class="dt">text</span>: <span class="ch">&#39;Go to the gym&#39;</span>}
+        ]);
+
+        <span class="co">// how many are there in total now?</span>
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">3</span>);
+    });
+...</code></pre><p>Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection.url (i.e the url reference to the collection's location on the server) is what we expect it to be:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Can have a url property to define the basic url structure for all contained models.&#39;</span>, <span class="kw">function</span>() {
+        <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
+
+        <span class="co">// what has been specified as the url base in our model?</span>
+        expect(<span class="kw">todos</span>.<span class="fu">url</span>).<span class="fu">toBe</span>(<span class="ch">&#39;/todos/&#39;</span>);
+});</code></pre><p>For the third spec, it's useful to remember that the implementation for our collection will have methods for filtering how many Todo items are done and how many are remaining - we can call these <code>done()</code> and <code>remaining()</code>. Consider writing a spec which creates a new collection and adds one new model that has a preset <code>done</code> state of <code>true</code> and two others that have the default <code>done</code> state of <code>false</code>. Testing the length of what's returned using <code>done()</code> and <code>remaining()</code> should allow us to know whether the state management in our application is working or needs a little tweaking.</p><p>The final implementation for our TodoList collection can be found below:</p><pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">window</span>.<span class="fu">TodoList</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+
+        <span class="dt">model</span>: Todo,
+
+        <span class="dt">url</span>: <span class="ch">&#39;/todos/&#39;</span>,
+
+        <span class="dt">done</span>: <span class="kw">function</span>() {
+            <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">filter</span>(<span class="kw">function</span>(todo) { <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>); });
+        },
+
+        <span class="dt">remaining</span>: <span class="kw">function</span>() {
+            <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">without</span>.<span class="fu">apply</span>(<span class="kw">this</span>, <span class="kw">this</span>.<span class="fu">done</span>());
+        },
+
+        <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
+            <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) { 
+                <span class="kw">return</span> <span class="dv">1</span>; 
+            }
+
+            <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">last</span>().<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>) + <span class="dv">1</span>;
+        },
+
+        <span class="dt">comparator</span>: <span class="kw">function</span>(todo) {
+            <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>);
+        }
+
+    });</code></pre><h2 id="views"><a name="testing-jasmine-views">Views</a></h2><p>Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.</p><p><strong>The Jasmine jQuery Plugin</strong></p><p>As we know our Todo application will be using jQuery for DOM manipulation, there's a useful jQuery plugin called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a> we can use to help simplify BDD testing rendered elements that our views may produce.</p><p>The plugin provides a number of additional Jasmine <a href="https://github.com/pivotal/jasmine/wiki/Matchers">matchers</a> to help test jQuery wrapped sets such as:</p><ul><li><code>toBe(jQuerySelector)</code> e.g <code>expect($('&lt;div id=&quot;some-id&quot;&gt;&lt;/div&gt;')).toBe('div#some-id')</code></li><li><code>toBeChecked()</code> e.g <code>expect($('&lt;input type=&quot;checkbox&quot; checked=&quot;checked&quot;/&gt;')).toBeChecked()</code></li><li><code>toBeSelected()</code> e.g <code>expect($('&lt;option selected=&quot;selected&quot;&gt;&lt;/option&gt;')).toBeSelected()</code></li></ul><p>and <a href="https://github.com/velesin/jasmine-jquery">many others</a>. The complete list of matchers supported can be found on the project homepage. It's useful to know that similar to the standard Jasmine matchers, the custom matchers above can be inverted using the .not prefix (i.e <code>expect(x).not.toBe(y)</code>):</p><pre class="sourceCode javascript"><code class="sourceCode javascript">expect($(<span class="ch">&#39;&lt;div&gt;I am an example&lt;/div&gt;&#39;</span>)).<span class="fu">not</span>.<span class="fu">toHaveText</span>(<span class="ot">/</span><span class="fl">other</span><span class="ot">/</span>)</code></pre><p>jasmine-jquery also includes a fixtures model, allowing us to load in arbitrary HTML content we may wish to use in our tests. Fixtures can be used as follows:</p><p>Include some HTML in an external fixtures file:</p><p>some.fixture.html: <code>&lt;div id=&quot;sample-fixture&quot;&gt;some HTML content&lt;/div&gt;</code></p><p>Next, inside our actual test we would load it as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">loadFixtures(<span class="ch">&#39;some.fixture.html&#39;</span>)
+$(<span class="ch">&#39;some-fixture&#39;</span>).<span class="fu">myTestedPlugin</span>();
+expect($(<span class="ch">&#39;#some-fixture&#39;</span>)).<span class="fu">to</span>&lt;the rest of your matcher would go here&gt;</code></pre><p>The jasmine-jquery plugin is by default setup to load fixtures from a specific directory: spec/javascripts/fixtures. If you wish to configure this path you can do so by initially setting <code>jasmine.getFixtures().fixturesPath = 'your custom path'</code>.</p><p>Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the <code>spyOnEvent()</code> and <code>assert(eventName).toHaveBeenTriggered(selector)</code> functions. An example of usage may look as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">spyOnEvent($(<span class="ch">&#39;#el&#39;</span>), <span class="ch">&#39;click&#39;</span>);
+$(<span class="ch">&#39;#el&#39;</span>).<span class="fu">click</span>();
+expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTriggeredOn</span>($(<span class="ch">&#39;#el&#39;</span>));</code></pre><p><strong>View testing</strong></p><p>In this section we will review three dimensions to writing specs for Backbone Views: initial setup, view rendering and finally templating. The latter two of these are the most commonly tested, however we'll review shortly why writing specs for the initialization of your views can also be of benefit.</p><h2 id="initial-setup">Initial setup</h2><p>At their most basic, specs for Backbone views should validate that they are being correctly tied to specific DOM elements and are backed by valid data models. The reason to consider doing this is that failures to such specs can trip up more complex tests later on and they're fairly simple to write, given the overall value offered.</p><p>To help ensure a consistent testing setup for our specs, we use <code>beforeEach()</code> to append both an empty <code>UL</code> (#todoList) to the DOM and initialize a new instance of a TodoView using an empty Todo model. <code>afterEach()</code> is used to remove the previous #todoList <code>UL</code> as well as the previous instance of the view.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Tests for TodoView&#39;</span>, <span class="kw">function</span>() {
+
+    beforeEach(<span class="kw">function</span>() {
+        $(<span class="ch">&#39;body&#39;</span>).<span class="fu">append</span>(<span class="ch">&#39;&lt;ul id=&quot;todoList&quot;&gt;&lt;/ul&gt;&#39;</span>);
+        <span class="kw">this</span>.<span class="fu">todoView</span> = <span class="kw">new</span> TodoView({ <span class="dt">model</span>: <span class="kw">new</span> Todo() });
+    });
+
+
+    afterEach(<span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">remove</span>();
+        $(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">remove</span>();
+    });
+
+...</code></pre><p>The first spec useful to write is a check that the TodoView we've created is using the correct <code>tagName</code> (element or className). The purpose of this test is to make sure it's been correctly tied to a DOM element when it was created.</p><p>Backbone views typically create empty DOM elements once initialized, however these elements are not attached to the visible DOM in order to allow them to be constructed without an impact on the performance of rendering.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Should be tied to a DOM element when created, based off the property provided.&#39;</span>, <span class="kw">function</span>() {
+    <span class="co">//what html element tag name represents this view?</span>
+    expect(<span class="kw">todoView.el.tagName</span>.<span class="fu">toLowerCase</span>()).<span class="fu">toBe</span>(<span class="ch">&#39;li&#39;</span>);
+});</code></pre><p>Once again, if the TodoView has not already been written, we will experience failing specs. Thankfully, solving this is as simple as creating a new Backbone.View with a specific <code>tagName</code>.</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> todoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">tagName</span>:  <span class="st">&quot;li&quot;</span>
+});</code></pre><p>If instead of testing against the <code>tagName</code> you would prefer to use a className instead, we can take advantage of jasmine-jquery's <code>toHaveClass()</code> matcher to cater for this.</p><pre><code>it(&#39;Should have a class of &quot;todos&quot;&#39;), function(){
+   expect($(this.view.el)).toHaveClass(&#39;todos&#39;);
+});</code></pre><p>The <code>toHaveClass()</code> matcher operates on jQuery objects and if the plugin hadn't been used, an exception would have been incurred (it is of course also possible to test for the className by accessing el.className if not opting to use jasmine-jquery).</p><p>You may have noticed that in <code>beforeEach()</code>, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the <code>toBeDefined()</code> matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Is backed by a model instance, which provides the data.&#39;</span>, <span class="kw">function</span>() {
+
+    expect(<span class="kw">todoView</span>.<span class="fu">model</span>).<span class="fu">toBeDefined</span>();
+
+    <span class="co">// what&#39;s the value for Todo.get(&#39;done&#39;) here?</span>
+    expect(<span class="kw">todoView.model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)).<span class="fu">toBe</span>(<span class="kw">false</span>); <span class="co">//or toBeFalsy()</span>
+});</code></pre><h2 id="view-rendering">View rendering</h2><p>Next we're going to take a look at writing specs for view rendering. Specifically, we want to test that our TodoView elements are actually rendering as expected.</p><p>In smaller applications, those new to BDD might argue that visual confirmation of view rendering could replace unit testing of views. The reality is that when dealing with applications that might grow to multiple-views, it often makes sense to automate this process as much as possible from the get-go. There are also aspects of rendering that require verification beyond what is visually presented on-screen (which we'll see very shortly).</p><p>We're going to begin testing views by writing two specs. The first spec will check that the view's <code>render()</code> method is correctly returning the view instance, which is necessary for chaining. Our second spec will check that the HTML produced is exactly what we expect based on the properties of the model instance that's been associated with our TodoView.</p><p>Unlike some of the previous specs we've covered, this section will make greater use of <code>beforeEach()</code> to both demonstrate how to use nested suites and also ensure a consistent set of conditions for our specs. In our first view spec for TodoView, we're simply going to create a sample model (based on Todo) and instantiate a TodoView which associates it with the model.</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;TodoView&quot;</span>, <span class="kw">function</span>() {
+
+  beforeEach(<span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">model</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
+      <span class="dt">text</span>: <span class="st">&quot;My Todo&quot;</span>,
+      <span class="dt">order</span>: <span class="dv">1</span>,
+      <span class="dt">done</span>: <span class="kw">false</span>
+    });
+    <span class="kw">this</span>.<span class="fu">view</span> = <span class="kw">new</span> TodoView({<span class="dt">model</span>:<span class="kw">this</span>.<span class="fu">model</span>});
+  });
+
+  describe(<span class="st">&quot;Rendering&quot;</span>, <span class="kw">function</span>() {
+
+    it(<span class="st">&quot;returns the view object&quot;</span>, <span class="kw">function</span>() {
+      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>()).<span class="fu">toEqual</span>(<span class="kw">this</span>.<span class="fu">view</span>);
+    });
+
+    it(<span class="st">&quot;produces the correct HTML&quot;</span>, <span class="kw">function</span>() {
+      <span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>();
+
+      <span class="co">//let&#39;s use jasmine-jquery&#39;s toContain() to avoid</span>
+      <span class="co">//testing for the complete content of a todo&#39;s markup</span>
+      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">el</span>.<span class="fu">innerHTML</span>)
+        .<span class="fu">toContain</span>(<span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;&#39;</span>);
+    });
+
+  });
+
+});</code></pre><p>Once these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from <code>render()</code>, only passed as this is Backbone's default behavior. We haven't yet overwritten the <code>render()</code> method with our own version.</p><p><strong>Note:</strong> For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed:</p><pre><code>&lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+        &lt;div class=&quot;display&quot;&gt;
+          &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+          &lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;
+          &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;edit&quot;&gt;
+          &lt;input class=&quot;todo-input&quot; type=&quot;text&quot; value=&quot;&lt;%= content %&gt;&quot; /&gt;
+        &lt;/div&gt;
+&lt;/div&gt;</code></pre><p>The second spec fails with the following message:</p><p>Expected '' to contain <code>'&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'</code>.</p><p>The reason for this is the default behavior for render() doesn't create any markup. Let's write a replacement for render() which fixes this:</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
+  <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;&#39;</span>;
+  <span class="kw">var</span> output = template
+    .<span class="fu">replace</span>(<span class="st">&quot;&lt;%= text %&gt;&quot;</span>, <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>));
+  $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(output);
+  <span class="kw">return</span> <span class="kw">this</span>;
+}</code></pre><p>The above specifies an inline string template and replaces fields found in the template within the &quot;&lt;% %&gt;&quot; blocks with their corresponding values from the associated model. As we're now also returning the TodoView instance from the method, the first spec will also pass. It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against like this. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.</p><p>With this in mind, let's re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;Template&quot;</span>, <span class="kw">function</span>() {
+
+  beforeEach(<span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>();
+  });
+
+  it(<span class="st">&quot;has the correct text content&quot;</span>, <span class="kw">function</span>() {
+    expect($(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">el</span>).<span class="fu">find</span>(<span class="ch">&#39;todo-content&#39;</span>))
+      .<span class="fu">toHaveText</span>(<span class="ch">&#39;My Todo&#39;</span>);
+  });
+
+});</code></pre><p>It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we've been establishing jQuery expectations based on the view's el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).</p><p>Re-writing the last spec to use fixtures would look as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;TodoView&quot;</span>, <span class="kw">function</span>() {
+
+  beforeEach(<span class="kw">function</span>() {
+    ...
+    setFixtures(<span class="ch">&#39;&lt;ul class=&quot;todos&quot;&gt;&lt;/ul&gt;&#39;</span>);
+  });
+
+  ...
+
+  describe(<span class="st">&quot;Template&quot;</span>, <span class="kw">function</span>() {
+
+    beforeEach(<span class="kw">function</span>() {
+      $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+    });
+
+    it(<span class="st">&quot;has the correct text content&quot;</span>, <span class="kw">function</span>() {
+      expect($(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">find</span>(<span class="ch">&#39;.todo-content&#39;</span>))
+        .<span class="fu">toHaveText</span>(<span class="ch">&#39;My Todo&#39;</span>);
+    });
+
+  });
+
+});</code></pre><p>What we're now doing in the above spec is appending the rendered todo item into the fixture. We then set expectations against the fixture, which may be something desirable when a view is setup against an element which already exists in the DOM. It would be necessary to provide both the fixture and test the <code>el</code> property correctly picking up the element expected when the view is instantiated.</p><h2 id="rendering-with-a-templating-system">Rendering with a templating system</h2><p>JavaScript templating systems (such as Handlebars, Mustache and even Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.</p><p>In our case, when a user sets a Todo item to be complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test we would ideally like to work:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;When a todo is done&quot;</span>, <span class="kw">function</span>() {
+
+  beforeEach(<span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>({<span class="dt">done</span>: <span class="kw">true</span>}, {<span class="dt">silent</span>: <span class="kw">true</span>});
+    $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+  });
+
+  it(<span class="st">&quot;has a done class&quot;</span>, <span class="kw">function</span>() {
+    expect($(<span class="ch">&#39;.todos .todo-content:first-child&#39;</span>))
+      .<span class="fu">toHaveClass</span>(<span class="st">&quot;done&quot;</span>);
+  });
+
+});</code></pre><p>This will fail with the following message:</p><p>Expected '<label class="todo-content">My Todo</label>' to have class 'done'.</p><p>which can be fixed in the existing render() method as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
+  <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&#39;</span> +
+    <span class="ch">&#39;&lt;%= text %&gt;&lt;/label&gt;&#39;</span>;
+  <span class="kw">var</span> output = template
+    .<span class="fu">replace</span>(<span class="st">&quot;&lt;%= text %&gt;&quot;</span>, <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>));
+  $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(output);
+  <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)) {
+    <span class="kw">this</span>.$(<span class="st">&quot;.todo-content&quot;</span>).<span class="fu">addClass</span>(<span class="st">&quot;done&quot;</span>);
+  }
+  <span class="kw">return</span> <span class="kw">this</span>;
+}</code></pre><p>This can however get unwieldily fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. Whilst there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.</p><p>The TodoView object modified to use Underscore templating would look as follows:</p><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+  <span class="dt">tagName</span>: <span class="st">&quot;li&quot;</span>,
+
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options) {
+    <span class="kw">this</span>.<span class="fu">template</span> = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">options</span>.<span class="fu">template</span> || <span class="st">&quot;&quot;</span>);
+  },
+
+  <span class="dt">render</span>: <span class="kw">function</span>() {
+    $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>()));
+    <span class="kw">return</span> <span class="kw">this</span>;
+  },
+
+  ...
+
+});</code></pre><p>Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g type=&quot;text/template&quot;). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it's preferable to either do this or load in templates stored in external files for testing.</p><p>For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and adding a new script file with the following contents, to jasmine.yml or SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">beforeEach(<span class="kw">function</span>() {
+  <span class="kw">this</span>.<span class="fu">templates</span> = <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>.<span class="fu">templates</span> || {}, {
+    <span class="dt">todo</span>: <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&#39;</span> +
+            <span class="ch">&#39;&lt;%= text %&gt;&#39;</span> +
+          <span class="ch">&#39;&lt;/label&gt;&#39;</span>
+  });
+});</code></pre><p>To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView object:</p><pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;TodoView&quot;</span>, <span class="kw">function</span>() {
+
+  beforeEach(<span class="kw">function</span>() {
+    ...
+    <span class="kw">this</span>.<span class="fu">view</span> = <span class="kw">new</span> TodoView({
+      <span class="dt">model</span>: <span class="kw">this</span>.<span class="fu">model</span>,
+      <span class="dt">template</span>: <span class="kw">this</span>.<span class="fu">templates</span>.<span class="fu">todo</span>
+    });
+  });
+
+  ...
+
+});</code></pre><p>The existing specs we've looked at would continue to pass using this approach, leaving us free to adjust the template with some additional conditional logic for Todos with a status of 'done':</p><pre class="sourceCode javascript"><code class="sourceCode javascript">beforeEach(<span class="kw">function</span>() {
+  <span class="kw">this</span>.<span class="fu">templates</span> = <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>.<span class="fu">templates</span> || {}, {
+    <span class="dt">todo</span>: <span class="ch">&#39;&lt;label class=&quot;todo-content &lt;%= done ? &#39;</span>done<span class="ch">&#39; : &#39;&#39; %&gt;&quot;&#39;</span> +
+            <span class="ch">&#39;&lt;%= text %&gt;&#39;</span> +
+          <span class="ch">&#39;&lt;/label&gt;&#39;</span>
+  });
+});</code></pre><p>This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using it's build in <code>loadFixtures()</code> and <code>readFixtures()</code> methods. For more information, consider reading the official jasmine-jquery <a href="https://github.com/velesin/jasmine-jquery">docs</a>.</p><h2 id="conclusions">Conclusions</h2><p>We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p><p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p><h2 id="exercise">Exercise</h2><p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-joans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peaking back) will also put your Backbone skills to test too.</p><h2 id="further-reading">Further reading</h2><ul><li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li><li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li></ul>
+</body>
+</html>
+

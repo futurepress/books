@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifer="uid">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:identifier id="uid">siyavula.com.dummy-book-repo.1.0</dc:identifier>
+    <dc:title>Siyavula: Physics Gr 12</dc:title>
+    <dc:creator>Siyavula Education</dc:creator>
+    <dc:language>en</dc:language>
+    <meta property="dcterms:modified">Mon Aug 19 19:35:43 2013 GMT</meta>
+  </metadata>
+  <manifest>
+    <item id="nav" href="siyavula-physics-12-nav.html" media-type="application/xhtml+xml" properties="nav"/>
+
+<item href="intro" id="Project-intro.html" media-type="application/xhtml+xml"/>
+<item id="chapter-10" href="02-Momentum-and-impulse.section-01.html" media-type="application/xhtml+xml"/>
+<item id="chapter-11" href="02-Momentum-and-impulse.section-02.html" media-type="application/xhtml+xml"/>
+<item id="chapter-12" href="02-Momentum-and-impulse.section-03.html" media-type="application/xhtml+xml"/>
+<item id="chapter-0" href="01-Skills-for-science.section-01.html" media-type="application/xhtml+xml"/>
+<item id="chapter-6" href="01-Skills-for-science.section-07.html" media-type="application/xhtml+xml"/>
+<item id="chapter-9" href="01-Skills-for-science.section-10.html" media-type="application/xhtml+xml"/>
+
+<item id="0b28140325e552ebdf7c1ad582ffd956.png" href="../resources/0b28140325e552ebdf7c1ad582ffd956.png" media-type="image/png"/>
+<item id="2b0728bc035f67f3634899b159799752.png" href="../resources/2b0728bc035f67f3634899b159799752.png" media-type="image/png"/>
+<item id="40cd7147ffb9033dc59b7ae0d49b7b00.png" href="../resources/40cd7147ffb9033dc59b7ae0d49b7b00.png" media-type="image/png"/>
+<item id="49d35b3aefce33c9c0bab05a370e159f.png" href="../resources/49d35b3aefce33c9c0bab05a370e159f.png" media-type="image/png"/>
+<item id="71e6a3a1bc02250359b05bb8cb2486c1.png" href="../resources/71e6a3a1bc02250359b05bb8cb2486c1.png" media-type="image/png"/>
+<item id="7e9c58d2d394ce88526a5c1065d1132a.png" href="../resources/7e9c58d2d394ce88526a5c1065d1132a.png" media-type="image/png"/>
+<item id="a6c065fec7da539a1e84c1788c8c9ca7.png" href="../resources/a6c065fec7da539a1e84c1788c8c9ca7.png" media-type="image/png"/>
+<item id="b7590956995bf1e6e50497a027aa68e6.png" href="../resources/b7590956995bf1e6e50497a027aa68e6.png" media-type="image/png"/>
+<item id="eb9194ed90a41cf6519b3ce270ad71a3.png" href="../resources/eb9194ed90a41cf6519b3ce270ad71a3.png" media-type="image/png"/>
+<item id="f437e41fbfefe3e3e72ad7ae49b4ecb9.png" href="../resources/f437e41fbfefe3e3e72ad7ae49b4ecb9.png" media-type="image/png"/>
+<item id="fa3eb6250092eeb36b33d311f0d7ac85.png" href="../resources/fa3eb6250092eeb36b33d311f0d7ac85.png" media-type="image/png"/>
+<item id="fa797a5043bcf5dfe6db377856e64378.png" href="../resources/fa797a5043bcf5dfe6db377856e64378.png" media-type="image/png"/>
+<item id="BasketBall-by-SauMag-on-Flickr-8270038026_c0b9f653d5_o.jpg" href="../resources/BasketBall-by-SauMag-on-Flickr-8270038026_c0b9f653d5_o.jpg" media-type="image/jpeg"/>
+<item id="Bowler-by-gareth1953-on-Flickr-5858562848_02ab046a55_o.jpg" href="../resources/Bowler-by-gareth1953-on-Flickr-5858562848_02ab046a55_o.jpg" media-type="image/jpeg"/>
+<item id="Car-by-Moyan-Brenn-on-Flickr-5952275132_9c214f99ec_o.jpg" href="../resources/Car-by-Moyan-Brenn-on-Flickr-5952275132_9c214f99ec_o.jpg" media-type="image/jpeg"/>
+<item id="Falconry-by-foxypar4-on-Flickr-414755713_4f260ee365_o.jpg" href="../resources/Falconry-by-foxypar4-on-Flickr-414755713_4f260ee365_o.jpg" media-type="image/jpeg"/>
+<item id="Moon-by-Mark-Winterbourne-on-Flickr-6066305557_780128a95d_o-cropped.jpg" href="../resources/Moon-by-Mark-Winterbourne-on-Flickr-6066305557_780128a95d_o-cropped.jpg" media-type="image/jpeg"/>
+<item id="Mosquito-by-John-Tran-on-Flickr-8143929538_b7d3e4406c_o-cropped.jpg" href="../resources/Mosquito-by-John-Tran-on-Flickr-8143929538_b7d3e4406c_o-cropped.jpg" media-type="image/jpeg"/>
+<item id="Motorbike-by-Natesh-Ramasamy-on-Flickr-7346123072_85a510e237_k.jpg" href="../resources/Motorbike-by-Natesh-Ramasamy-on-Flickr-7346123072_85a510e237_k.jpg" media-type="image/jpeg"/>
+<item id="SoccerLadyKicking-by-KM_Klemencic-on-Flickr-7892058384_0892ae36c9_k.jpg" href="../resources/SoccerLadyKicking-by-KM_Klemencic-on-Flickr-7892058384_0892ae36c9_k.jpg" media-type="image/jpeg"/>
+<item id="SquashCourt-by-MisterIan-on-Flickr-4084230081_700410d2e9_o.jpg" href="../resources/SquashCourt-by-MisterIan-on-Flickr-4084230081_700410d2e9_o.jpg" media-type="image/jpeg"/>
+<item id="TennisBallNet-by-swampa-on-Flickr-4308348195_ab53ed1b31_o.jpg" href="../resources/TennisBallNet-by-swampa-on-Flickr-4308348195_ab53ed1b31_o.jpg" media-type="image/jpeg"/>
+<item id="Truck-by-David-Guos-Master-on-Flickr-7553870574_1fbf12ca69_o.jpg" href="../resources/Truck-by-David-Guos-Master-on-Flickr-7553870574_1fbf12ca69_o.jpg" media-type="image/jpeg"/>
+
+  <item href="Project-intro.html" id="Project-intro.html" media-type="application/xhtml+xml"/></manifest>
+  <spine>
+	<itemref idref="chapter-10"/>
+	<itemref idref="chapter-11"/>
+	<itemref idref="chapter-12"/>
+	<itemref idref="chapter-0"/>
+	<itemref idref="chapter-6"/>
+	<itemref idref="chapter-9"/>
+  </spine>
+</package>
