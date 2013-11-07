@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>artistName</key>
+	<string>Scott Chacon</string>
+	<key>book-info</key>
+	<dict>
+		<key>cover-image-hash</key>
+		<string>19A904FFCB2FFC4248FF2EBDE91B15F7</string>
+		<key>cover-image-path</key>
+		<string>cover.jpg</string>
+		<key>package-file-hash</key>
+		<string>DBCCB54B140D1158250B24B7E3E81B63</string>
+		<key>publisher-unique-id</key>
+		<string>bf50c6e1-eb0a-4a1c-a2cd-ea8809ae086a</string>
+		<key>unique-id</key>
+		<integer>3600459977323766084</integer>
+	</dict>
+	<key>genre</key>
+	<string>Software Development</string>
+	<key>itemName</key>
+	<string>Pro Git</string>
+	<key>playlistName</key>
+	<string>Pro Git</string>
+	<key>releaseDate</key>
+	<string>2009-08-19T00:00:00+00:00</string>
+</dict>
+</plist>

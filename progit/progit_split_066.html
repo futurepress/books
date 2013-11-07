@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Pro Git - professional version control</title>
+    <meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/>
+    <link href="stylesheet.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style>
+  </head>
+  <body class="calibre">
+<h2 class="calibre4" id="calibre_pb_75">The Refspec</h2>
+
+<p class="calibre3">Throughout this book, you've used simple mappings from remote branches to local references; but they can be more complex.
+Suppose you add a remote like this:</p>
+
+<pre class="calibre9"><code class="calibre10">$ git remote add origin git@github.com:schacon/simplegit-progit.git
+</code></pre>
+
+<p class="calibre3">It adds a section to your <code class="calibre10">.git/config</code> file, specifying the name of the remote (<code class="calibre10">origin</code>), the URL of the remote repository, and the refspec for fetching:</p>
+
+<pre class="calibre9"><code class="calibre10">[remote "origin"]
+       url = git@github.com:schacon/simplegit-progit.git
+       fetch = +refs/heads/*:refs/remotes/origin/*
+</code></pre>
+
+<p class="calibre3">The format of the refspec is an optional <code class="calibre10">+</code>, followed by <code class="calibre10">&lt;src&gt;:&lt;dst&gt;</code>, where <code class="calibre10">&lt;src&gt;</code> is the pattern for references on the remote side and <code class="calibre10">&lt;dst&gt;</code> is where those references will be written locally. The <code class="calibre10">+</code> tells Git to update the reference even if it isn't a fast-forward.</p>
+
+<p class="calibre3">In the default case that is automatically written by a <code class="calibre10">git remote add</code> command, Git fetches all the references under <code class="calibre10">refs/heads/</code> on the server and writes them to <code class="calibre10">refs/remotes/origin/</code> locally. So, if there is a <code class="calibre10">master</code> branch on the server, you can access the log of that branch locally via</p>
+
+<pre class="calibre9"><code class="calibre10">$ git log origin/master
+$ git log remotes/origin/master
+$ git log refs/remotes/origin/master
+</code></pre>
+
+<p class="calibre3">They're all equivalent, because Git expands each of them to <code class="calibre10">refs/remotes/origin/master</code>.</p>
+
+<p class="calibre3">If you want Git instead to pull down only the <code class="calibre10">master</code> branch each time, and not every other branch on the remote server, you can change the fetch line to</p>
+
+<pre class="calibre9"><code class="calibre10">fetch = +refs/heads/master:refs/remotes/origin/master
+</code></pre>
+
+<p class="calibre3">This is just the default refspec for <code class="calibre10">git fetch</code> for that remote. If you want to do something one time, you can specify the refspec on the command line, too. To pull the <code class="calibre10">master</code> branch on the remote down to <code class="calibre10">origin/mymaster</code> locally, you can run</p>
+
+<pre class="calibre9"><code class="calibre10">$ git fetch origin master:refs/remotes/origin/mymaster
+</code></pre>
+
+<p class="calibre3">You can also specify multiple refspecs. On the command line, you can pull down several branches like so:</p>
+
+<pre class="calibre9"><code class="calibre10">$ git fetch origin master:refs/remotes/origin/mymaster \
+   topic:refs/remotes/origin/topic
+From git@github.com:schacon/simplegit
+ ! [rejected]        master     -&gt; origin/mymaster  (non fast forward)
+ * [new branch]      topic      -&gt; origin/topic
+</code></pre>
+
+<p class="calibre3">In this case, the  master branch pull was rejected because it wasn't a fast-forward reference. You can override that by specifying the <code class="calibre10">+</code> in front of the refspec.</p>
+
+<p class="calibre3">You can also specify multiple refspecs for fetching in your configuration file. If you want to always fetch the master and experiment branches, add two lines:</p>
+
+<pre class="calibre9"><code class="calibre10">[remote "origin"]
+       url = git@github.com:schacon/simplegit-progit.git
+       fetch = +refs/heads/master:refs/remotes/origin/master
+       fetch = +refs/heads/experiment:refs/remotes/origin/experiment
+</code></pre>
+
+<p class="calibre3">You can't use partial globs in the pattern, so this would be invalid:</p>
+
+<pre class="calibre9"><code class="calibre10">fetch = +refs/heads/qa*:refs/remotes/origin/qa*
+</code></pre>
+
+<p class="calibre3">However, you can use namespacing to accomplish something like that. If you have a QA team that pushes a series of branches, and you want to get the master branch and any of the QA team's branches but nothing else, you can use a config section like this:</p>
+
+<pre class="calibre9"><code class="calibre10">[remote "origin"]
+       url = git@github.com:schacon/simplegit-progit.git
+       fetch = +refs/heads/master:refs/remotes/origin/master
+       fetch = +refs/heads/qa/*:refs/remotes/origin/qa/*
+</code></pre>
+
+<p class="calibre3">If you have a complex workflow process that has a QA team pushing branches, developers pushing branches, and integration teams pushing and collaborating on remote branches, you can namespace them easily this way.</p>
+
+<h3 class="calibre5">Pushing Refspecs</h3>
+
+<p class="calibre3">It's nice that you can fetch namespaced references that way, but how does the QA team get their branches into a <code class="calibre10">qa/</code> namespace in the first place? You accomplish that by using refspecs to push.</p>
+
+<p class="calibre3">If the QA team wants to push their <code class="calibre10">master</code> branch to <code class="calibre10">qa/master</code> on the remote server, they can run</p>
+
+<pre class="calibre9"><code class="calibre10">$ git push origin master:refs/heads/qa/master
+</code></pre>
+
+<p class="calibre3">If they want Git to do that automatically each time they run <code class="calibre10">git push origin</code>, they can add a <code class="calibre10">push</code> value to their config file:</p>
+
+<pre class="calibre9"><code class="calibre10">[remote "origin"]
+       url = git@github.com:schacon/simplegit-progit.git
+       fetch = +refs/heads/*:refs/remotes/origin/*
+       push = refs/heads/master:refs/heads/qa/master
+</code></pre>
+
+<p class="calibre3">Again, this will cause a <code class="calibre10">git push origin</code> to push the local <code class="calibre10">master</code> branch to the remote <code class="calibre10">qa/master</code> branch by default.</p>
+
+<h3 class="calibre5">Deleting References</h3>
+
+<p class="calibre3">You can also use the refspec to delete references from the remote server by running something like this:</p>
+
+<pre class="calibre9"><code class="calibre10">$ git push origin :topic
+</code></pre>
+
+<p class="calibre3">Because the refspec is <code class="calibre10">&lt;src&gt;:&lt;dst&gt;</code>, by leaving off the <code class="calibre10">&lt;src&gt;</code> part, this basically says to make the topic branch on the remote nothing, which deletes it. </p>
+
+</body>
+</html>

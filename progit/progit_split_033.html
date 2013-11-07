@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Pro Git - professional version control</title>
+    <meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/>
+    <link href="stylesheet.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style>
+  </head>
+  <body class="calibre">
+<h2 class="calibre4" id="calibre_pb_37">Gitolite</h2>
+
+<p class="calibre3">Git has started to become very popular in corporate environments, which tend to have some additional requirements in terms of access control.  Gitolite was created to help with those requirements.</p>
+
+<p class="calibre3">Gitolite allows you to specify permissions not just by repository (like Gitosis does), but also by branch or tag names within each repository.  That is, you can specify that certain people (or groups of people) can only push certain "refs" (branches or tags) but not others.</p>
+
+<h3 class="calibre5">Installing</h3>
+
+<p class="calibre3">Installing Gitolite is very easy, even if you don't read the extensive documentation that comes with it.  You need an account on a Unix server of some kind; various Linux flavours, and Solaris 10, have been tested.  You do not need root access, assuming git, perl, and an openssh compatible ssh server are already installed.  In the examples below, we will use the <code class="calibre10">gitolite</code> account on a host called <code class="calibre10">gitserver</code>.</p>
+
+<p class="calibre3">Curiously, Gitolite is installed by running a script <em class="calibre12">on the workstation</em>, so your workstation must have a bash shell available.  Even the bash that comes with msysgit will do, in case you're wondering.</p>
+
+<p class="calibre3">You start by obtaining public key based access to your server, so that you can log in from your workstation to the server without getting a password prompt.  The following method works on Linux; for other workstation OSs you may have to do this manually.  We assume you already had a key pair generated using <code class="calibre10">ssh-keygen</code>.</p>
+
+<pre class="calibre9"><code class="calibre10">$ ssh-copy-id -i ~/.ssh/id_rsa gitolite@gitserver
+</code></pre>
+
+<p class="calibre3">This will ask you for the password to the gitolite account, and then set up public key access.  This is <strong class="calibre13">essential</strong> for the install script, so check to make sure you can run a command without getting a password prompt:</p>
+
+<pre class="calibre9"><code class="calibre10">$ ssh gitolite@gitserver pwd
+/home/gitolite
+</code></pre>
+
+<p class="calibre3">Next, you clone Gitolite from the project's main site and run the "easy install" script (the third argument is your name as you would like it to appear in the resulting gitolite-admin repository):</p>
+
+<pre class="calibre9"><code class="calibre10">$ git clone git://github.com/sitaramc/gitolite
+$ cd gitolite/src
+$ ./gl-easy-install -q gitolite gitserver sitaram
+</code></pre>
+
+<p class="calibre3">And you're done!  Gitolite has now been installed on the server, and you now have a brand new repository called <code class="calibre10">gitolite-admin</code> in the home directory of your workstation.  You administer your gitolite setup by making changes to this repository and pushing (just like Gitosis).</p>
+
+<p class="calibre3">[By the way, <em class="calibre12">upgrading</em> gitolite is also done the same way.  Also, if you're interested, run the script without any arguments to get a usage message.]</p>
+
+<p class="calibre3">That last command does produce a fair amount of output, which might be interesting to read.  Also, the first time you run this, a new keypair is created; you will have to choose a passphrase or hit enter for none.  Why a second keypair is needed, and how it is used, is explained in the "ssh troubleshooting" document that comes with Gitolite.  (Hey the documentation has to be good for <em class="calibre12">something</em>!)</p>
+
+<h3 class="calibre5">Customising the Install</h3>
+
+<p class="calibre3">While the default, quick, install works for most people, there are some ways to customise the install if you need to.  If you omit the <code class="calibre10">-q</code> argument, you get a "verbose" mode install -- detailed information on what the install is doing at each step.  The verbose mode also allows you to change certain server-side parameters, such as the location of the actual repositories, by editing an "rc" file that the server uses.  This "rc" file is liberally commented so you should be able to make any changes you need quite easily, save it, and continue.  This file also contains various settings that you can change to enable or disable some of gitolite's advanced features.</p>
+
+<h3 class="calibre5">Config File and Access Control Rules</h3>
+
+<p class="calibre3">So once the install is done, you switch to the <code class="calibre10">gitolite-admin</code> repository (placed in your HOME directory) and poke around to see what you got:</p>
+
+<pre class="calibre9"><code class="calibre10">$ cd ~/gitolite-admin/
+$ ls
+conf/  keydir/
+$ find conf keydir -type f
+conf/gitolite.conf
+keydir/sitaram.pub
+$ cat conf/gitolite.conf
+#gitolite conf
+# please see conf/example.conf for details on syntax and features
+
+repo gitolite-admin
+    RW+                 = sitaram
+
+repo testing
+    RW+                 = @all
+</code></pre>
+
+<p class="calibre3">Notice that "sitaram" (the last argument in the <code class="calibre10">gl-easy-install</code> command you gave earlier) has read-write permissions on the <code class="calibre10">gitolite-admin</code> repository as well as a public key file of the same name.</p>
+
+<p class="calibre3">The config file syntax for Gitolite is <em class="calibre12">quite</em> different from Gitosis.  Again, this is liberally documented in <code class="calibre10">conf/example.conf</code>, so we'll only mention some highlights here.</p>
+
+<p class="calibre3">You can group users or repos for convenience.  The group names are just like macros; when defining them, it doesn't even matter whether they are projects or users; that distinction is only made when you <em class="calibre12">use</em> the "macro".</p>
+
+<pre class="calibre9"><code class="calibre10">@oss_repos      = linux perl rakudo git gitolite
+@secret_repos   = fenestra pear
+
+@admins         = scott     # Adams, not Chacon, sorry :)
+@interns        = ashok     # get the spelling right, Scott!
+@engineers      = sitaram dilbert wally alice
+@staff          = @admins @engineers @interns
+</code></pre>
+
+<p class="calibre3">You can control permissions at the "ref" level.  In the following example, interns can only push the "int" branch.  Engineers can push any branch whose name starts with "eng-", and tags that start with "rc" followed by a digit.  And the admins can do anything (including rewind) to any ref.</p>
+
+<pre class="calibre9"><code class="calibre10">repo @oss_repos
+    RW  int$                = @interns
+    RW  eng-                = @engineers
+    RW  refs/tags/rc[0-9]   = @engineers
+    RW+                     = @admins
+</code></pre>
+
+<p class="calibre3">The expression after the <code class="calibre10">RW</code> or <code class="calibre10">RW+</code> is a regular expression (regex) that the refname (ref) being pushed is matched against.  So we call it a "refex"!  Of course, a refex can be far more powerful than shown here, so don't overdo it if you're not comfortable with perl regexes.</p>
+
+<p class="calibre3">Also, as you probably guessed, Gitolite prefixes <code class="calibre10">refs/heads/</code> as a syntactic convenience if the refex does not begin with <code class="calibre10">refs/</code>.</p>
+
+<p class="calibre3">An important feature of the config file's syntax is that all the rules for a repository need not be in one place.  You can keep all the common stuff together, like the rules for all <code class="calibre10">oss_repos</code> shown above, then add specific rules for specific cases later on, like so:</p>
+
+<pre class="calibre9"><code class="calibre10">repo gitolite
+    RW+                     = sitaram
+</code></pre>
+
+<p class="calibre3">That rule will just get added to the ruleset for the <code class="calibre10">gitolite</code> repository.</p>
+
+<p class="calibre3">At this point you might be wondering how the access control rules are actually applied, so let's go over that briefly.</p>
+
+<p class="calibre3">There are two levels of access control in gitolite.  The first is at the repository level; if you have read (or write) access to <em class="calibre12">any</em> ref in the repository, then you have read (or write) access to the repository.  This is the only access control that Gitosis had.</p>
+
+<p class="calibre3">The second level, applicable only to "write" access, is by branch or tag within a repository.  The username, the access being attempted (<code class="calibre10">W</code> or <code class="calibre10">+</code>), and the refname being updated are known.  The access rules are checked in order of appearance in the config file, looking for a match for this combination (but remember that the refname is regex-matched, not merely string-matched).  If a match is found, the push succeeds.  A fallthrough results in access being denied.</p>
+
+<h3 class="calibre5">Advanced Access Control with "deny" rules</h3>
+
+<p class="calibre3">So far, we've only seen permissions to be one or <code class="calibre10">R</code>, <code class="calibre10">RW</code>, or <code class="calibre10">RW+</code>.  However, gitolite allows another permission: <code class="calibre10">-</code>, standing for "deny".  This gives you a lot more power, at the expense of some complexity, because now fallthrough is not the <em class="calibre12">only</em> way for access to be denied, so the <em class="calibre12">order of the rules now matters</em>!</p>
+
+<p class="calibre3">Let us say, in the situation above, we want engineers to be able to rewind any branch <em class="calibre12">except</em> master and integ.  Here's how to do that:</p>
+
+<pre class="calibre9"><code class="calibre10">    RW  master integ    = @engineers
+    -   master integ    = @engineers
+    RW+                 = @engineers
+</code></pre>
+
+<p class="calibre3">Again, you simply follow the rules top down until you hit a match for your access mode, or a deny.  Non-rewind push to master or integ is allowed by the first rule.  A rewind push to those refs does not match the first rule, drops down to the second, and is therefore denied.  Any push (rewind or non-rewind) to refs other than master or integ won't match the first two rules anyway, and the third rule allows it.</p>
+
+<h3 class="calibre5">Restricting pushes by files changed</h3>
+
+<p class="calibre3">In addition to restricting what branches a user can push changes to, you can also restrict what files they are allowed to touch.  For example, perhaps the Makefile (or some other program) is really not supposed to be changed by just anyone, because a lot of things depend on it or would break if the changes are not done <em class="calibre12">just right</em>.  You can tell gitolite:</p>
+
+<pre class="calibre9"><code class="calibre10">repo foo
+    RW                  =   @junior_devs @senior_devs
+
+    RW  NAME/           =   @senior_devs
+    -   NAME/Makefile   =   @junior_devs
+    RW  NAME/           =   @junior_devs
+</code></pre>
+
+<p class="calibre3">This powerful feature is documented in <code class="calibre10">conf/example.conf</code>.</p>
+
+<h3 class="calibre5">Personal Branches</h3>
+
+<p class="calibre3">Gitolite also has a feature called "personal branches" (or rather, "personal branch namespace") that can be very useful in a corporate environment.</p>
+
+<p class="calibre3">A lot of code exchange in the git world happens by "please pull" requests.  In a corporate environment, however, unauthenticated access is a no-no, and a developer workstation cannot do authentication, so you have to push to the central server and ask someone to pull from there.</p>
+
+<p class="calibre3">This would normally cause the same branch name clutter as in a centralised VCS, plus setting up permissions for this becomes a chore for the admin.</p>
+
+<p class="calibre3">Gitolite lets you define a "personal" or "scratch" namespace prefix for each developer (for example, <code class="calibre10">refs/personal/&lt;devname&gt;/*</code>), with full permissions for that dev only, and read access for everyone else.  Just choose a verbose install and set the <code class="calibre10">$PERSONAL</code> variable in the "rc" file to <code class="calibre10">refs/personal</code>.  That's all; it's pretty much fire and forget as far as the admin is concerned, even if there is constant churn in the project team composition.</p>
+
+<h3 class="calibre5">"Wildcard" repositories</h3>
+
+<p class="calibre3">Gitolite allows you to specify repositories with wildcards (actually perl regexes), like, for example <code class="calibre10">assignments/s[0-9][0-9]/a[0-9][0-9]</code>, to pick a random example.  This is a <em class="calibre12">very</em> powerful feature, which has to be enabled by setting <code class="calibre10">$GL_WILDREPOS = 1;</code> in the rc file.  It allows you to assign a new permission mode ("C") which allows users to create repositories based on such wild cards, automatically assigns ownership to the specific user who created it, allows him/her to hand out R and RW permissions to other users to collaborate, etc.  This feature is documented in <code class="calibre10">doc/4-wildcard-repositories.mkd</code>.</p>
+
+<h3 class="calibre5">Other Features</h3>
+
+<p class="calibre3">We'll round off this discussion with a bunch of other features, all of which are described in great detail in the "faqs, tips, etc" document.</p>
+
+<p class="calibre3"><strong class="calibre13">Logging</strong>: Gitolite logs all successful accesses.  If you were somewhat relaxed about giving people rewind permissions (<code class="calibre10">RW+</code>) and some kid blew away "master", the log file is a life saver, in terms of easily and quickly finding the SHA that got hosed.</p>
+
+<p class="calibre3"><strong class="calibre13">Git outside normal PATH</strong>: One extremely useful convenience feature in gitolite is support for git installed outside the normal <code class="calibre10">$PATH</code> (this is more common than you think; some corporate environments or even some hosting providers refuse to install things system-wide and you end up putting them in your own directories).  Normally, you are forced to make the <em class="calibre12">client-side</em> git aware of this non-standard location of the git binaries in some way.  With gitolite, just choose a verbose install and set <code class="calibre10">$GIT_PATH</code> in the "rc" files.  No client-side changes are required after that :-)</p>
+
+<p class="calibre3"><strong class="calibre13">Access rights reporting</strong>: Another convenient feature is what happens when you try and just ssh to the server.  Older versions of gitolite used to complain about the <code class="calibre10">SSH_ORIGINAL_COMMAND</code> environment variable being empty (see the ssh documentation if interested).  Now Gitolite comes up with something like this:</p>
+
+<pre class="calibre9"><code class="calibre10">hello sitaram, the gitolite version here is v0.90-9-g91e1e9f
+you have the following permissions:
+  R     anu-wsd
+  R     entrans
+  R  W  git-notes
+  R  W  gitolite
+  R  W  gitolite-admin
+  R     indic_web_input
+  R     shreelipi_converter
+</code></pre>
+
+<p class="calibre3"><strong class="calibre13">Delegation</strong>: For really large installations, you can delegate responsibility for groups of repositories to various people and have them manage those pieces independently.  This reduces the load on the main admin, and makes him less of a bottleneck.  This feature has its own documentation file in the <code class="calibre10">doc/</code> directory.</p>
+
+<p class="calibre3"><strong class="calibre13">Gitweb support</strong>: Gitolite supports gitweb in several ways.  You can specify which repos are visible via gitweb.  You can set the "owner" and "description" for gitweb from the gitolite config file.  Gitweb has a mechanism for you to implement access control based on HTTP authentication, so you can make it use the "compiled" config file that gitolite produces, which means the same access control rules (for read access) apply for gitweb and gitolite.</p>
+
+</body>
+</html>

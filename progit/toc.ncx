@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+  <head>
+    <meta content="bf50c6e1-eb0a-4a1c-a2cd-ea8809ae086a" name="dtb:uid"/>
+    <meta content="2" name="dtb:depth"/>
+    <meta content="calibre (0.6.48)" name="dtb:generator"/>
+    <meta content="0" name="dtb:totalPageCount"/>
+    <meta content="0" name="dtb:maxPageNumber"/>
+  </head>
+  <docTitle>
+    <text>Pro Git</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="7a7bf101-0b2c-41a5-8208-d3e5ce8e7324" playOrder="1">
+      <navLabel>
+        <text>Getting Started</text>
+      </navLabel>
+      <content src="progit_split_000.html"/>
+    </navPoint>
+    <navPoint id="0b4aa257-a611-48c4-b573-344807707a43" playOrder="2">
+      <navLabel>
+        <text>Git Basics</text>
+      </navLabel>
+      <content src="progit_split_008.html"/>
+    </navPoint>
+    <navPoint id="fa3e4dfa-98ed-4043-9ecd-6904d75b6822" playOrder="3">
+      <navLabel>
+        <text>Git Branching</text>
+      </navLabel>
+      <content src="progit_split_017.html"/>
+    </navPoint>
+    <navPoint id="b2c79930-41b9-4fd8-8427-d133540a7ee2" playOrder="4">
+      <navLabel>
+        <text>Git on the Server</text>
+      </navLabel>
+      <content src="progit_split_025.html"/>
+    </navPoint>
+    <navPoint id="9f9cfd60-f165-4990-9726-04fc6e693276" playOrder="5">
+      <navLabel>
+        <text>Distributed Git</text>
+      </navLabel>
+      <content src="progit_split_037.html"/>
+    </navPoint>
+    <navPoint id="ed2b80ae-ce76-44f1-afe4-cca65cabd7dc" playOrder="6">
+      <navLabel>
+        <text>Git Tools</text>
+      </navLabel>
+      <content src="progit_split_042.html"/>
+    </navPoint>
+    <navPoint id="d7717003-3e76-4811-a659-de9a044f2cb9" playOrder="7">
+      <navLabel>
+        <text>Customizing Git</text>
+      </navLabel>
+      <content src="progit_split_051.html"/>
+    </navPoint>
+    <navPoint id="95aeb8d5-86a5-4d00-a194-44d1ac32effc" playOrder="8">
+      <navLabel>
+        <text>Git and Other Systems</text>
+      </navLabel>
+      <content src="progit_split_057.html"/>
+    </navPoint>
+    <navPoint id="5ac9c3e7-5bf9-4f67-822f-94859f1f7504" playOrder="9">
+      <navLabel>
+        <text>Git Internals</text>
+      </navLabel>
+      <content src="progit_split_061.html"/>
+    </navPoint>
+  </navMap>
+</ncx>
