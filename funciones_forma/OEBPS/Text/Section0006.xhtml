@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+</script>
+</head>
+
+<body>
+  <h1>Conclusiones</h1>
+
+  <p>Se implementó la forma de cálculo en Python <a href="../Text/Section0007.xhtml#bib03" style="text-decoration:none">[3]</a>, usando IPython notebook <a href="../Text/Section0007.xhtml#bib04" style="text-decoration:none">[4]</a>, Numpy <a href="../Text/Section0007.xhtml#bib05" style="text-decoration:none">[5]</a>, Sympy <a href="../Text/Section0007.xhtml#bib06" style="text-decoration:none">[6]</a>, Matplotlib <a href="../Text/Section0007.xhtml#bib07" style="text-decoration:none">[7]</a> y Mayavi <a href="../Text/Section0007.xhtml#bib08" style="text-decoration:none">[8]</a>; también se realizo una tabla comparativa de los tiempos de ejecución de las funciones:</p>
+
+  <table border="1">
+    <tr>
+      <th>Nodos</th>
+
+      <th>Elemento 1D</th>
+    </tr>
+
+    <tr>
+      <td>2</td>
+
+      <td>0.003 seg.</td>
+    </tr>
+
+    <tr>
+      <td>3</td>
+
+      <td>0.003 seg.</td>
+    </tr>
+
+    <tr>
+      <td>4</td>
+
+      <td>0.055 seg.</td>
+    </tr>
+
+    <tr>
+      <td>5</td>
+
+      <td>0.074 seg.</td>
+    </tr>
+
+    <tr>
+      <td>6</td>
+
+      <td>0.167 seg.</td>
+    </tr>
+  </table>
+
+  <table border="1">
+    <tr>
+      <th>Nodos</th>
+
+      <th>Elemento 2D</th>
+    </tr>
+
+    <tr>
+      <td>4</td>
+
+      <td>0.021 seg.</td>
+    </tr>
+
+    <tr>
+      <td>9</td>
+
+      <td>0.006 seg.</td>
+    </tr>
+
+    <tr>
+      <td>16</td>
+
+      <td>0.345 seg.</td>
+    </tr>
+
+    <tr>
+      <td>25</td>
+
+      <td>0.469 seg.</td>
+    </tr>
+
+    <tr>
+      <td>36</td>
+
+      <td>1.530 seg.</td>
+    </tr>
+  </table>
+
+  <table border="1">
+    <tr>
+      <th>Nodos</th>
+
+      <th>Elemento 3D</th>
+    </tr>
+
+    <tr>
+      <td>8</td>
+
+      <td>0.060 seg.</td>
+    </tr>
+
+    <tr>
+      <td>27</td>
+
+      <td>0.014 seg.</td>
+    </tr>
+
+    <tr>
+      <td>64</td>
+
+      <td>4.637 seg.</td>
+    </tr>
+
+    <tr>
+      <td>125</td>
+
+      <td>7.197 seg.</td>
+    </tr>
+
+    <tr>
+      <td>216</td>
+
+      <td>57.337 seg.</td>
+    </tr>
+  </table>
+
+  <p>Para generar elementos de mayor grado y reducir el tiempo de cálculo se optimizará el código y se usara Numba <a href="../Text/Section0007.xhtml#bib09" style="text-decoration:none">[9]</a>.</p>
+
+  <p>Se estudiarán las propiedades de las matrices \(l^{(2)}\):</p>
+
+  <ul>
+    <li>
+      <p>Rango</p>
+    </li>
+
+    <li>
+      <p>Traza</p>
+    </li>
+
+    <li>
+      <p>Determinante</p>
+    </li>
+  </ul>
+
+  <p>En el caso de las matrices \(l^{(3)}\):</p>
+
+  <ul>
+    <li>
+      <p>Hiperdeterminante</p>
+    </li>
+  </ul>
+
+  <p>Los archivos del trabajo se encuentran en <a href="https://github.com/ClaudioVZ/Teoria-FEM-Python" style="text-decoration:none">https://github.com/ClaudioVZ/Teoria-FEM-Python</a>.</p>
+</body>
+</html>

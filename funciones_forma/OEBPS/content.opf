@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId" version="2.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:identifier id="BookId" opf:scheme="UUID">urn:uuid:8641db26-0737-4eff-b877-f762a71848ae</dc:identifier>
+    <dc:title>Funcines de forma lagrangianas</dc:title>
+    <dc:creator opf:role="aut">ClaudioVZ</dc:creator>
+    <dc:language>es-BO</dc:language>
+    <dc:date opf:event="modification">2013-12-27</dc:date>
+    <meta content="0.7.4" name="Sigil version" />
+  </metadata>
+  <manifest>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
+    <item href="Text/Section0002.xhtml" id="Section0002.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0003.xhtml" id="Section0003.xhtml" media-type="application/xhtml+xml" />
+    <item href="Images/2_nodos.png" id="x2_nodos.png" media-type="image/png" />
+    <item href="Images/3_nodos.png" id="x3_nodos.png" media-type="image/png" />
+    <item href="Images/4_nodos_1.png" id="x4_nodos_1.png" media-type="image/png" />
+    <item href="Images/4_nodos_2.png" id="x4_nodos_2.png" media-type="image/png" />
+    <item href="Images/4_nodos_3.png" id="x4_nodos_3.png" media-type="image/png" />
+    <item href="Images/4_nodos_4.png" id="x4_nodos_4.png" media-type="image/png" />
+    <item href="Images/8_nodos_1.png" id="x8_nodos_1.png" media-type="image/png" />
+    <item href="Images/8_nodos_2.png" id="x8_nodos_2.png" media-type="image/png" />
+    <item href="Images/8_nodos_3.png" id="x8_nodos_3.png" media-type="image/png" />
+    <item href="Images/8_nodos_4.png" id="x8_nodos_4.png" media-type="image/png" />
+    <item href="Images/8_nodos_5.png" id="x8_nodos_5.png" media-type="image/png" />
+    <item href="Images/8_nodos_6.png" id="x8_nodos_6.png" media-type="image/png" />
+    <item href="Images/8_nodos_7.png" id="x8_nodos_7.png" media-type="image/png" />
+    <item href="Images/8_nodos_8.png" id="x8_nodos_8.png" media-type="image/png" />
+    <item href="Images/9_nodos_1.png" id="x9_nodos_1.png" media-type="image/png" />
+    <item href="Images/9_nodos_2.png" id="x9_nodos_2.png" media-type="image/png" />
+    <item href="Images/9_nodos_3.png" id="x9_nodos_3.png" media-type="image/png" />
+    <item href="Images/9_nodos_4.png" id="x9_nodos_4.png" media-type="image/png" />
+    <item href="Images/9_nodos_5.png" id="x9_nodos_5.png" media-type="image/png" />
+    <item href="Images/9_nodos_6.png" id="x9_nodos_6.png" media-type="image/png" />
+    <item href="Images/9_nodos_7.png" id="x9_nodos_7.png" media-type="image/png" />
+    <item href="Images/9_nodos_8.png" id="x9_nodos_8.png" media-type="image/png" />
+    <item href="Images/9_nodos_9.png" id="x9_nodos_9.png" media-type="image/png" />
+    <item href="Images/27_nodos_1.png" id="x27_nodos_1.png" media-type="image/png" />
+    <item href="Images/27_nodos_2.png" id="x27_nodos_2.png" media-type="image/png" />
+    <item href="Images/27_nodos_3.png" id="x27_nodos_3.png" media-type="image/png" />
+    <item href="Images/27_nodos_4.png" id="x27_nodos_4.png" media-type="image/png" />
+    <item href="Images/27_nodos_5.png" id="x27_nodos_5.png" media-type="image/png" />
+    <item href="Images/27_nodos_6.png" id="x27_nodos_6.png" media-type="image/png" />
+    <item href="Images/27_nodos_7.png" id="x27_nodos_7.png" media-type="image/png" />
+    <item href="Images/27_nodos_8.png" id="x27_nodos_8.png" media-type="image/png" />
+    <item href="Images/27_nodos_9.png" id="x27_nodos_9.png" media-type="image/png" />
+    <item href="Images/27_nodos_10.png" id="x27_nodos_10.png" media-type="image/png" />
+    <item href="Images/27_nodos_11.png" id="x27_nodos_11.png" media-type="image/png" />
+    <item href="Images/27_nodos_12.png" id="x27_nodos_12.png" media-type="image/png" />
+    <item href="Images/27_nodos_13.png" id="x27_nodos_13.png" media-type="image/png" />
+    <item href="Images/27_nodos_14.png" id="x27_nodos_14.png" media-type="image/png" />
+    <item href="Images/27_nodos_15.png" id="x27_nodos_15.png" media-type="image/png" />
+    <item href="Images/27_nodos_16.png" id="x27_nodos_16.png" media-type="image/png" />
+    <item href="Images/27_nodos_17.png" id="x27_nodos_17.png" media-type="image/png" />
+    <item href="Images/27_nodos_18.png" id="x27_nodos_18.png" media-type="image/png" />
+    <item href="Images/27_nodos_19.png" id="x27_nodos_19.png" media-type="image/png" />
+    <item href="Images/27_nodos_20.png" id="x27_nodos_20.png" media-type="image/png" />
+    <item href="Images/27_nodos_21.png" id="x27_nodos_21.png" media-type="image/png" />
+    <item href="Images/27_nodos_22.png" id="x27_nodos_22.png" media-type="image/png" />
+    <item href="Images/27_nodos_23.png" id="x27_nodos_23.png" media-type="image/png" />
+    <item href="Images/27_nodos_24.png" id="x27_nodos_24.png" media-type="image/png" />
+    <item href="Images/27_nodos_25.png" id="x27_nodos_25.png" media-type="image/png" />
+    <item href="Images/27_nodos_26.png" id="x27_nodos_26.png" media-type="image/png" />
+    <item href="Images/27_nodos_27.png" id="x27_nodos_27.png" media-type="image/png" />
+    <item href="Text/Section0000.xhtml" id="Section0000.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0004.xhtml" id="Section0004.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0005.xhtml" id="Section0005.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0006.xhtml" id="Section0006.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0007.xhtml" id="Section0007.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Section0001.xhtml" id="Section0001.xhtml" media-type="application/xhtml+xml" />
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="Section0000.xhtml" />
+    <itemref idref="Section0001.xhtml" />
+    <itemref idref="Section0002.xhtml" />
+    <itemref idref="Section0003.xhtml" />
+    <itemref idref="Section0004.xhtml" />
+    <itemref idref="Section0005.xhtml" />
+    <itemref idref="Section0006.xhtml" />
+    <itemref idref="Section0007.xhtml" />
+  </spine>
+  <guide />
+</package>

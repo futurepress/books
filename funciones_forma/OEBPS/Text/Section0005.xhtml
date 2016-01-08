@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+</script>
+</head>
+
+<body>
+  <h1>Funciones de forma tridimensionales</h1>
+
+  <h2 id="sigil_toc_id_5">Método</h2>
+
+  <p>Las \(l^{(3)}\) también se generar a partir de \(l^{(1)}\), pero realizando una multiplicación con matrices 3D <a href="../Text/Section0007.xhtml#bib02" style="text-decoration:none">[2]</a>.</p>
+
+  <p>\[\left [ l^{(1)} \right ] \left [ l^{(1)} \right ]^{T} \left [ l^{(1)} \right ]^{T} = \left [ l^{(3)} \right ]\]</p>
+
+  <p>En donde \(\left [ l^{(1)} \right ]\) es una matriz columna con \(j\)-elementos, \(\left [ l^{(1)} \right ]^{T}\) es una matriz fila con \(j\)-elementos y \(\left [ l^{(3)} \right ]\) es una matriz 3D cúbica.</p>
+
+  <h2 id="sigil_toc_id_6">Ejemplo \(l^{(3)}\)</h2>
+
+  <p>Elemento hexaédrico de 8 nodos:</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \end{matrix} \right ] = \left [ \begin{matrix} - \frac{1}{2} \xi + \frac{1}{2} \\ \frac{1}{2} \xi + \frac{1}{2} \end{matrix} \right ]\]</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} \end{matrix} \right ] = \left [ \left [ \begin{matrix} l^{(3)}_{1} &amp; l^{(3)}_{5} \\ l^{(3)}_{2} &amp; l^{(3)}_{6} \end{matrix} \right ] \left [ \begin{matrix} l^{(3)}_{4} &amp; l^{(3)}_{8} \\ l^{(3)}_{3} &amp; l^{(3)}_{7} \end{matrix} \right ] \right ]\]</p>
+
+  <p>\[\begin{align*} l^{(3)}_{1} &amp;= - \frac{1}{8} \xi \eta \zeta + \frac{1}{8} \xi \eta + \frac{1}{8} \xi \zeta - \frac{1}{8} \xi + \frac{1}{8} \eta \zeta - \frac{1}{8} \eta - \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{2} &amp;= \frac{1}{8} \xi \eta \zeta - \frac{1}{8} \xi \eta - \frac{1}{8} \xi \zeta + \frac{1}{8} \xi + \frac{1}{8} \eta \zeta - \frac{1}{8} \eta - \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{6} &amp;= - \frac{1}{8} \xi \eta \zeta - \frac{1}{8} \xi \eta + \frac{1}{8} \xi \zeta + \frac{1}{8} \xi - \frac{1}{8} \eta \zeta - \frac{1}{8} \eta + \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{5} &amp;= \frac{1}{8} \xi \eta \zeta + \frac{1}{8} \xi \eta - \frac{1}{8} \xi \zeta - \frac{1}{8} \xi - \frac{1}{8} \eta \zeta - \frac{1}{8} \eta + \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{4} &amp;= \frac{1}{8} \xi \eta \zeta - \frac{1}{8} \xi \eta + \frac{1}{8} \xi \zeta - \frac{1}{8} \xi - \frac{1}{8} \eta \zeta + \frac{1}{8} \eta - \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{3} &amp;= - \frac{1}{8} \xi \eta \zeta + \frac{1}{8} \xi \eta - \frac{1}{8} \xi \zeta + \frac{1}{8} \xi - \frac{1}{8} \eta \zeta + \frac{1}{8} \eta - \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{7} &amp;= \frac{1}{8} \xi \eta \zeta + \frac{1}{8} \xi \eta + \frac{1}{8} \xi \zeta + \frac{1}{8} \xi + \frac{1}{8} \eta \zeta + \frac{1}{8} \eta + \frac{1}{8} \zeta + \frac{1}{8} \\ l^{(3)}_{8} &amp;= - \frac{1}{8} \xi \eta \zeta - \frac{1}{8} \xi \eta - \frac{1}{8} \xi \zeta - \frac{1}{8} \xi + \frac{1}{8} \eta \zeta + \frac{1}{8} \eta + \frac{1}{8} \zeta + \frac{1}{8}\end{align*}\]</p>
+
+  <div style="display:table">
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_1.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_2.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_3.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_4.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_5.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_6.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_7.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/8_nodos_8.png" width="192" /></div>
+    </div>
+  </div>
+
+  <p>Elemento hexaédrico de 27 nodos:</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \\ l^{(1)}_{3} \end{matrix} \right ] = \left [ \begin{matrix} \frac{1}{2} \xi^{2} - \frac{1}{2} \xi \\ - \xi^{2} + 1 \\ \frac{1}{2} \xi^{2} + \frac{1}{2} \xi \end{matrix} \right ]\]</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \\ l^{(1)}_{3} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} &amp; l^{(1)}_{3} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} &amp; l^{(1)}_{3} \end{matrix} \right ] = \left [ \left [ \begin{matrix} l^{(3)}_{1} &amp; l^{(3)}_{10} &amp; l^{(3)}_{19} \\ l^{(3)}_{2} &amp; l^{(3)}_{11} &amp; l^{(3)}_{20} \\ l^{(3)}_{3} &amp; l^{(3)}_{12} &amp; l^{(3)}_{21} \end{matrix} \right ] \left [ \begin{matrix} l^{(3)}_{8} &amp; l^{(3)}_{17} &amp; l^{(3)}_{26} \\ l^{(3)}_{9} &amp; l^{(3)}_{18} &amp; l^{(3)}_{27} \\ l^{(3)}_{4} &amp; l^{(3)}_{13} &amp; l^{(3)}_{22} \end{matrix} \right ] \left [ \begin{matrix} l^{(3)}_{7} &amp; l^{(3)}_{16} &amp; l^{(3)}_{25} \\ l^{(3)}_{6} &amp; l^{(3)}_{15} &amp; l^{(3)}_{24} \\ l^{(3)}_{5} &amp; l^{(3)}_{14} &amp; l^{(3)}_{23} \end{matrix} \right ] \right ]\]</p>
+
+  <p>\[\begin{align*} l^{(3)}_{1} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{8} \xi^{2} \eta^{2} \zeta - \frac{1}{8} \xi^{2} \eta \zeta^{2} + \frac{1}{8} \xi^{2} \eta \zeta - \frac{1}{8} \xi \eta^{2} \zeta^{2} + \frac{1}{8} \xi \eta^{2} \zeta + \frac{1}{8} \xi \eta \zeta^{2} - \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{2} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \eta \zeta^{2} - \frac{1}{4} \xi^{2} \eta \zeta + \frac{1}{4} \eta^{2} \zeta^{2} - \frac{1}{4} \eta^{2} \zeta - \frac{1}{4} \eta \zeta^{2} + \frac{1}{4} \eta \zeta \\ l^{(3)}_{3} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{8} \xi^{2} \eta^{2} \zeta - \frac{1}{8} \xi^{2} \eta \zeta^{2} + \frac{1}{8} \xi^{2} \eta \zeta + \frac{1}{8} \xi \eta^{2} \zeta^{2} - \frac{1}{8} \xi \eta^{2} \zeta - \frac{1}{8} \xi \eta \zeta^{2} + \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{12} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} + \frac{1}{4} \xi^{2} \eta \zeta^{2} - \frac{1}{4} \xi^{2} \eta - \frac{1}{4} \xi \eta^{2} \zeta^{2} + \frac{1}{4} \xi \eta^{2} + \frac{1}{4} \xi \eta \zeta^{2} - \frac{1}{4} \xi \eta \\ l^{(3)}_{21} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{8} \xi^{2} \eta^{2} \zeta - \frac{1}{8} \xi^{2} \eta \zeta^{2} - \frac{1}{8} \xi^{2} \eta \zeta + \frac{1}{8} \xi \eta^{2} \zeta^{2} + \frac{1}{8} \xi \eta^{2} \zeta - \frac{1}{8} \xi \eta \zeta^{2} - \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{20} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \eta \zeta^{2} + \frac{1}{4} \xi^{2} \eta \zeta + \frac{1}{4} \eta^{2} \zeta^{2} + \frac{1}{4} \eta^{2} \zeta - \frac{1}{4} \eta \zeta^{2} - \frac{1}{4} \eta \zeta \\ l^{(3)}_{19} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{8} \xi^{2} \eta^{2} \zeta - \frac{1}{8} \xi^{2} \eta \zeta^{2} - \frac{1}{8} \xi^{2} \eta \zeta - \frac{1}{8} \xi \eta^{2} \zeta^{2} - \frac{1}{8} \xi \eta^{2} \zeta + \frac{1}{8} \xi \eta \zeta^{2} + \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{10} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} + \frac{1}{4} \xi^{2} \eta \zeta^{2} - \frac{1}{4} \xi^{2} \eta + \frac{1}{4} \xi \eta^{2} \zeta^{2} - \frac{1}{4} \xi \eta^{2} - \frac{1}{4} \xi \eta \zeta^{2} + \frac{1}{4} \xi \eta \\ l^{(3)}_{11} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \eta^{2} - \frac{1}{2} \xi^{2} \eta \zeta^{2} + \frac{1}{2} \xi^{2} \eta - \frac{1}{2} \eta^{2} \zeta^{2} + \frac{1}{2} \eta^{2} + \frac{1}{2} \eta \zeta^{2} - \frac{1}{2} \eta \\ l^{(3)}_{8} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \zeta + \frac{1}{4} \xi \eta^{2} \zeta^{2} - \frac{1}{4} \xi \eta^{2} \zeta - \frac{1}{4} \xi \zeta^{2} + \frac{1}{4} \xi \zeta \\ l^{(3)}_{9} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \eta^{2} \zeta - \frac{1}{2} \xi^{2} \zeta^{2} + \frac{1}{2} \xi^{2} \zeta - \frac{1}{2} \eta^{2} \zeta^{2} + \frac{1}{2} \eta^{2} \zeta + \frac{1}{2} \zeta^{2} - \frac{1}{2} \zeta \\ l^{(3)}_{13} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \zeta - \frac{1}{4} \xi \eta^{2} \zeta^{2} + \frac{1}{4} \xi \eta^{2} \zeta + \frac{1}{4} \xi \zeta^{2} - \frac{1}{4} \xi \zeta \\ l^{(3)}_{22} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \eta^{2} - \frac{1}{2} \xi^{2} \zeta^{2} + \frac{1}{2} \xi^{2} + \frac{1}{2} \xi \eta^{2} \zeta^{2} - \frac{1}{2} \xi \eta^{2} - \frac{1}{2} \xi \zeta^{2} + \frac{1}{2} \xi \\ l^{(3)}_{27} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \zeta - \frac{1}{4} \xi \eta^{2} \zeta^{2} - \frac{1}{4} \xi \eta^{2} \zeta + \frac{1}{4} \xi \zeta^{2} + \frac{1}{4} \xi \zeta \\ l^{(3)}_{26} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{2} \xi^{2} \eta^{2} \zeta - \frac{1}{2} \xi^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \zeta - \frac{1}{2} \eta^{2} \zeta^{2} - \frac{1}{2} \eta^{2} \zeta + \frac{1}{2} \zeta^{2} + \frac{1}{2} \zeta \\ l^{(3)}_{17} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \eta^{2} \zeta + \frac{1}{4} \xi^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \zeta + \frac{1}{4} \xi \eta^{2} \zeta^{2} + \frac{1}{4} \xi \eta^{2} \zeta - \frac{1}{4} \xi \zeta^{2} - \frac{1}{4} \xi \zeta \\ l^{(3)}_{18} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \eta^{2} - \frac{1}{2} \xi^{2} \zeta^{2} + \frac{1}{2} \xi^{2} - \frac{1}{2} \xi \eta^{2} \zeta^{2} + \frac{1}{2} \xi \eta^{2} + \frac{1}{2} \xi \zeta^{2} - \frac{1}{2} \xi \\ l^{(3)}_{14} &amp;= - \xi^{2} \eta^{2} \zeta^{2} + \xi^{2} \eta^{2} + \xi^{2} \zeta^{2} - \xi^{2} + \eta^{2} \zeta^{2} - \eta^{2} - \zeta^{2} + 1 \\ l^{(3)}_{7} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{8} \xi^{2} \eta^{2} \zeta + \frac{1}{8} \xi^{2} \eta \zeta^{2} - \frac{1}{8} \xi^{2} \eta \zeta - \frac{1}{8} \xi \eta^{2} \zeta^{2} + \frac{1}{8} \xi \eta^{2} \zeta - \frac{1}{8} \xi \eta \zeta^{2} + \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{6} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} \zeta - \frac{1}{4} \xi^{2} \eta \zeta^{2} + \frac{1}{4} \xi^{2} \eta \zeta + \frac{1}{4} \eta^{2} \zeta^{2} - \frac{1}{4} \eta^{2} \zeta + \frac{1}{4} \eta \zeta^{2} - \frac{1}{4} \eta \zeta \\ l^{(3)}_{5} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{8} \xi^{2} \eta^{2} \zeta + \frac{1}{8} \xi^{2} \eta \zeta^{2} - \frac{1}{8} \xi^{2} \eta \zeta + \frac{1}{8} \xi \eta^{2} \zeta^{2} - \frac{1}{8} \xi \eta^{2} \zeta + \frac{1}{8} \xi \eta \zeta^{2} - \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{14} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta \zeta^{2} + \frac{1}{4} \xi^{2} \eta - \frac{1}{4} \xi \eta^{2} \zeta^{2} + \frac{1}{4} \xi \eta^{2} - \frac{1}{4} \xi \eta \zeta^{2} + \frac{1}{4} \xi \eta \\ l^{(3)}_{23} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{8} \xi^{2} \eta^{2} \zeta + \frac{1}{8} \xi^{2} \eta \zeta^{2} + \frac{1}{8} \xi^{2} \eta \zeta + \frac{1}{8} \xi \eta^{2} \zeta^{2} + \frac{1}{8} \xi \eta^{2} \zeta + \frac{1}{8} \xi \eta \zeta^{2} + \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{24} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{4} \xi^{2} \eta^{2} \zeta - \frac{1}{4} \xi^{2} \eta \zeta^{2} - \frac{1}{4} \xi^{2} \eta \zeta + \frac{1}{4} \eta^{2} \zeta^{2} + \frac{1}{4} \eta^{2} \zeta + \frac{1}{4} \eta \zeta^{2} + \frac{1}{4} \eta \zeta \\ l^{(3)}_{25} &amp;= \frac{1}{8} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{8} \xi^{2} \eta^{2} \zeta + \frac{1}{8} \xi^{2} \eta \zeta^{2} + \frac{1}{8} \xi^{2} \eta \zeta - \frac{1}{8} \xi \eta^{2} \zeta^{2} - \frac{1}{8} \xi \eta^{2} \zeta - \frac{1}{8} \xi \eta \zeta^{2} - \frac{1}{8} \xi \eta \zeta \\ l^{(3)}_{16} &amp;= - \frac{1}{4} \xi^{2} \eta^{2} \zeta^{2} + \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta \zeta^{2} + \frac{1}{4} \xi^{2} \eta + \frac{1}{4} \xi \eta^{2} \zeta^{2} - \frac{1}{4} \xi \eta^{2} + \frac{1}{4} \xi \eta \zeta^{2} - \frac{1}{4} \xi \eta \\ l^{(3)}_{15} &amp;= \frac{1}{2} \xi^{2} \eta^{2} \zeta^{2} - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} \eta \zeta^{2} - \frac{1}{2} \xi^{2} \eta - \frac{1}{2} \eta^{2} \zeta^{2} + \frac{1}{2} \eta^{2} - \frac{1}{2} \eta \zeta^{2} + \frac{1}{2} \eta\end{align*}\]</p>
+
+  <div style="display:table">
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_1.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_2.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_3.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_4.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_5.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_6.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_7.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_8.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_9.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_10.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_11.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_12.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_13.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_14.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_15.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_16.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_17.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_18.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_19.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_20.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_21.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_22.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_23.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_24.png" width="192" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_25.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_26.png" width="192" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="192" src="../Images/27_nodos_27.png" width="192" /></div>
+    </div>
+  </div>
+</body>
+</html>

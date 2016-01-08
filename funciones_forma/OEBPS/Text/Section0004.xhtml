@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+</script>
+</head>
+
+<body>
+  <h1>Funciones de forma bidimensionales</h1>
+
+  <h2 id="sigil_toc_id_3">Método</h2>
+
+  <p>Las \(l^{(2)}\) se generar a partir de \(l^{(1)}\), multiplicando matrices:</p>
+
+  <p>\[\left [ l^{(1)} \right ] \left [ l^{(1)} \right ]^{T} = \left [ l^{(2)} \right ]\]</p>
+
+  <p>En donde \(\left [ l^{(1)} \right ]\) es una matriz columna con \(j\)-elementos, \(\left [ l^{(1)} \right ]^{T}\) es una matriz fila con \(j\)-elementos y \(\left [ l^{(2)} \right ]\) es una matriz cuadrada.</p>
+
+  <p>Si recorremos los elementos que forman parte de la matriz \(\left [ l^{(2)} \right ]\), uno a uno desde \(l^{(2)}_1\) hasta \(l^{(2)}_n\) forman una espiral, si graficamos las funciones que forman la matriz en el orden anterior observamos que el punto \((\xi, \eta)\) en el que la función vale \(1\) también hace un recorrido en espiral.</p>
+
+  <h2 id="sigil_toc_id_4">Ejemplo \(l^{(2)}\)</h2>
+
+  <p>Elemento rectangular de 4 nodos:</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \end{matrix} \right ] = \left [ \begin{matrix} - \frac{1}{2} \xi + \frac{1}{2} \\ \frac{1}{2} \xi + \frac{1}{2} \end{matrix} \right ]\]</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} \end{matrix} \right ] = \left [ \begin{matrix} l^{(2)}_{1} &amp; l^{(2)}_{4} \\ l^{(2)}_{2} &amp; l^{(2)}_{3} \end{matrix} \right ]\]</p>
+
+  <p>\[\begin{align*} l^{(2)}_{1} &amp;= \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta - \frac{1}{4} \xi \eta^{2} + \frac{1}{4} \xi \eta \\ l^{(2)}_{2} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} \eta + \frac{1}{2} \eta^{2} - \frac{1}{2} \eta \\ l^{(2)}_{3} &amp;= \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta + \frac{1}{4} \xi \eta^{2} - \frac{1}{4} \xi \eta \\ l^{(2)}_{4} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} - \frac{1}{2} \xi \eta^{2} + \frac{1}{2} \xi\end{align*}\]</p>
+
+  <div style="display:table">
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/4_nodos_1.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/4_nodos_2.png" width="251" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/4_nodos_3.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/4_nodos_4.png" width="251" /></div>
+    </div>
+  </div>
+
+  <p>Elemento rectangular de 9 nodos:</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \\ l^{(1)}_{3} \end{matrix} \right ] = \left [ \begin{matrix} \frac{1}{2} \xi^{2} - \frac{1}{2} \xi \\ - \xi^{2} + 1 \\ \frac{1}{2} \xi^{2} + \frac{1}{2} \xi \end{matrix} \right ]\]</p>
+
+  <p>\[\left [ \begin{matrix} l^{(1)}_{1} \\ l^{(1)}_{2} \\ l^{(1)}_{3} \end{matrix} \right ] \left [ \begin{matrix} l^{(1)}_{1} &amp; l^{(1)}_{2} &amp; l^{(1)}_{3} \end{matrix} \right ] = \left [ \begin{matrix} l^{(2)}_{1} &amp; l^{(2)}_{8} &amp; l^{(2)}_{7} \\ l^{(2)}_{2} &amp; l^{(2)}_{9} &amp; l^{(2)}_{6} \\ l^{(2)}_{3} &amp; l^{(2)}_{4} &amp; l^{(2)}_{5} \end{matrix} \right ]\]</p>
+
+  <p>\[\begin{align*} l^{(2)}_{1} &amp;= \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta - \frac{1}{4} \xi \eta^{2} + \frac{1}{4} \xi \eta \\ l^{(2)}_{2} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} \eta + \frac{1}{2} \eta^{2} - \frac{1}{2} \eta \\ l^{(2)}_{3} &amp;= \frac{1}{4} \xi^{2} \eta^{2} - \frac{1}{4} \xi^{2} \eta + \frac{1}{4} \xi \eta^{2} - \frac{1}{4} \xi \eta \\ l^{(2)}_{4} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} - \frac{1}{2} \xi \eta^{2} + \frac{1}{2} \xi \\ l^{(2)}_{5} &amp;= \frac{1}{4} \xi^{2} \eta^{2} + \frac{1}{4} \xi^{2} \eta + \frac{1}{4} \xi \eta^{2} + \frac{1}{4} \xi \eta \\ l^{(2)}_{6} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} - \frac{1}{2} \xi^{2} \eta + \frac{1}{2} \eta^{2} + \frac{1}{2} \eta \\ l^{(2)}_{7} &amp;= \frac{1}{4} \xi^{2} \eta^{2} + \frac{1}{4} \xi^{2} \eta - \frac{1}{4} \xi \eta^{2} - \frac{1}{4} \xi \eta \\ l^{(2)}_{8} &amp;= - \frac{1}{2} \xi^{2} \eta^{2} + \frac{1}{2} \xi^{2} + \frac{1}{2} \xi \eta^{2} - \frac{1}{2} \xi \\ l^{(2)}_{9} &amp;= \xi^{2} \eta^{2} - \xi^{2} - \eta^{2} + 1\end{align*}\]</p>
+
+  <div style="display:table">
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_1.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_2.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_3.png" width="251" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_4.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_5.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_6.png" width="251" /></div>
+    </div>
+
+    <div style="display:table-row">
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_7.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_8.png" width="251" /></div>
+
+      <div style="display:table-cell"><img alt="image" height="162" src="../Images/9_nodos_9.png" width="251" /></div>
+    </div>
+  </div>
+</body>
+</html>
